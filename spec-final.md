@@ -282,8 +282,8 @@ LEARNING SIGNAL
 | Thành viên | Phần đảm nhận | Output |
 |---|---|---|
 | Hoàng Tuấn Anh | Canvas + User Stories 4 paths | `spec-final.md` phần 1, 2 |
-| Vũ Lê Hoàng | Mini AI Spec + mô tả kiến trúc workflow | `spec-final.md` phần 6, mô tả agent pipeline |
-| Nguyễn Quang Trường | test/eval support + hỗ trợ demo | `spec-final.md` phần 3, `qa_eval/` |
+| Vũ Lê Hoàng |  mô tả kiến trúc workflow + test case mẫu| `spec-final.md` phần 6, mô tả agent pipeline |
+| Nguyễn Quang Trường | Mini AI Spec + test/eval support + hỗ trợ demo | `spec-final.md` phần 3, `qa_eval/` |
 | Đàm Lê Văn Toàn | Failure modes + tài liệu chính sách Xanh SM | `spec-final.md` phần 4, `data_pipeline/raw_data/` |
 | Phạm Tuấn Anh | ROI + Prototype  | `spec-final.md` phần 5 |
 | Vũ Hồng Quang | Eval metrics + Test cases mẫu  | `qa_eval/golden_datasets/testcases.json`, demo support |
