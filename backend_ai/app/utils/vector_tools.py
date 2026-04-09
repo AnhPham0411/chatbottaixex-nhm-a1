@@ -5,7 +5,8 @@ from sentence_transformers import SentenceTransformer
 from langchain_core.documents import Document
 from langchain_core.callbacks import CallbackManagerForRetrieverRun
 from langchain_core.retrievers import BaseRetriever
-from langchain.tools.retriever import create_retriever_tool
+from langchain_core.tools import create_retriever_tool
+
 from pydantic import Field
 from app.core import config
 
