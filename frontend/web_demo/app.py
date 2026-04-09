@@ -99,16 +99,16 @@ st.markdown(f"""
     }}
 
     /* Micro-buttons for feedback */
-    .stButton > button[kind="secondary"] {
+    .stButton > button[kind="secondary"] {{
         padding: 0.2rem 0.5rem !important;
         font-size: 0.8rem !important;
         min-height: 24px !important;
         line-height: 1 !important;
         border-radius: 8px !important;
-    }
+    }}
 
     /* Hide Streamlit elements */
-    #MainMenu {visibility: hidden;}
+    #MainMenu {{visibility: hidden;}}
     footer {{visibility: hidden;}}
     </style>
 """, unsafe_allow_html=True)
