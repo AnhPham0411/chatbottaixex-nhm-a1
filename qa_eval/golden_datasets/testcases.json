@@ -278,5 +278,516 @@
         "question": "Trong lúc chờ đèn đỏ, một xe khác đâm vào đuôi xe Xanh Car làm tôi bị đau cổ. Ai là người chịu trách nhiệm bồi thường trực tiếp cho tôi theo quy chế?",
         "expected_answer": "Đối tác (Tài xế) là người điều khiển phương tiện phải giữ gìn an toàn cho khách trên xe tuy nhiên không có quy định chịu trách nhiệm bồi thường cho khách trên xe khi xảy ra tai nạn do bên thứ 3 gây ra.",
         "source": "8_quy_chế_sử_dụng_sản_phẩm_xanh_car.md, Mục 3.2"
+    },
+    {
+        "id": "TC_041",
+        "category": "Tài khoản Gia đình - Trách nhiệm thanh toán",
+        "question": "Con tôi là thành viên trong Tài khoản Gia đình và vừa thực hiện một chuyến xe Xanh Car. Ai là người có trách nhiệm thanh toán cho chuyến xe này?",
+        "expected_answer": "Chủ tài khoản (admin) đồng ý thanh toán cho các Dịch vụ được đặt bởi hoặc cung cấp cho bất kỳ hoặc tất cả các Thành viên trong Tài khoản Gia đình thông qua Tài khoản Thanh toán Chung đã thiết lập.",
+        "source": "9_quy_chế_sử_dụng_tài_khoản_gia_đình.md, Mục 3 (Điều khoản cho Chủ tài khoản)"
+    },
+    {
+        "id": "TC_042",
+        "category": "Tài khoản Gia đình - Dữ liệu đối tác",
+        "question": "Chủ tài khoản và các Thành viên có quyền xem những thông tin gì của Tài xế khi đặt xe qua tính năng Gia đình?",
+        "expected_answer": "Họ có quyền truy cập vào hồ sơ của Đối tác bao gồm: Tên, Ảnh đại diện, Biển số xe, tin nhắn trò chuyện trong ứng dụng và Vị trí trực tuyến.",
+        "source": "9_quy_chế_sử_dụng_tài_khoản_gia_đình.md, Mục Điều kiện và điều khoản áp dụng cho Đối tác Tài xế"
+    },
+    {
+        "id": "TC_043",
+        "category": "Tài khoản Gia đình - Xử lý vi phạm",
+        "question": "Nếu một thành viên trong nhóm gia đình vi phạm Điều khoản sử dụng của Xanh SM (ví dụ: gửi hàng cấm hoặc có hành vi khiếm nhã), thì tài khoản của Chủ nhóm có bị ảnh hưởng không?",
+        "expected_answer": "Có. Bất kỳ hành vi vi phạm nào của Thành viên đối với Điều khoản sử dụng và Chính sách bảo vệ dữ liệu cá nhân đều có thể dẫn đến việc chấm dứt hoặc tạm dừng hoạt động của cả Tài khoản Gia đình và/hoặc tài khoản cá nhân của Thành viên đó.",
+        "source": "9_quy_chế_sử_dụng_tài_khoản_gia_đình.md, Mục 4 (Điều khoản cho Thành viên)"
+    },
+    {
+        "id": "TC_044",
+        "category": "Quy định hành lý - Trách nhiệm dân sự",
+        "question": "Nếu hành khách mang theo thú cưng lên xe Xanh Car và thú cưng làm rách ghế da, hành khách có phải bồi thường không?",
+        "expected_answer": "Có. Người dùng/Khách hàng phải chịu hoàn toàn trách nhiệm và bồi thường mọi thiệt hại phát sinh mà Xanh SM và/hoặc Đối tác phải chịu liên quan tới hành lý/tài sản mang theo.",
+        "source": "8_quy_chế_sử_dụng_sản_phẩm_xanh_car.md, Mục 3.4"
+    },
+    {
+        "id": "TC_048",
+        "category": "Quy định hành lý - Ý thức người dùng",
+        "question": "Ngoài việc không mang hàng cấm, quy chế yêu cầu người dùng phải có ý thức như thế nào đối với an toàn của hành lý và bản thân?",
+        "expected_answer": "Người dùng phải có ý thức tự giác, nghiêm chỉnh chấp hành quy tắc giao thông, giữ gìn an toàn cho mình và cho người khác.",
+        "source": "8_quy_chế_sử_dụng_sản_phẩm_xanh_car.md, Mục 3.2"
+    },
+    {
+        "id": "TC_049",
+        "category": "Hủy đơn - Xanh Ngon (Chế tài)",
+        "question": "Nếu tôi liên tục đặt đồ ăn trên Xanh Ngon rồi từ chối nhận hàng (boom hàng), tài khoản của tôi sẽ bị xử lý như thế nào?",
+        "expected_answer": "Ngoài việc phải thanh toán giá trị đơn hàng, tài khoản của Người dùng có thể bị vô hiệu hóa phương thức 'Thanh toán khi nhận hàng' (COD) trong một thời hạn nhất định theo quyết định của Xanh SM.",
+        "source": "10_quy_chế_sử_dụng_sản_phẩm_xanh_ngon.md, Mục 6.1"
+    },
+    {
+        "id": "TC_050",
+        "category": "Hủy đơn - Xanh Express",
+        "question": "Tôi đặt giao hàng Xanh Express nhưng tài xế đến nơi thì tôi không liên lạc được với người nhận và muốn hủy đơn để trả hàng về. Quy trình thực hiện như thế nào?",
+        "expected_answer": "Đối với đơn hàng giao thất bại hoặc bị hủy do không liên hệ được người nhận, Đối tác phải liên hệ với Người gửi để thực hiện việc hoàn hàng.",
+        "source": "7_quy_chế_sử_dụng_sản_phẩm_xanh_express.md, Mục 2, Bước 3"
+    },
+    {
+        "id": "TC_051",
+        "category": "Bảo hiểm Xanh Express - Gói Cơ bản",
+        "question": "Nếu tôi gửi một đơn hàng quần áo trị giá 5.000.000 VNĐ và sử dụng Gói bảo hiểm Cơ bản, nếu xảy ra mất mát hàng hóa, mức bồi thường tối đa tôi nhận được là bao nhiêu?",
+        "expected_answer": "Đối với hàng hóa không phải Tài liệu, mức bồi thường tối đa cho Gói Cơ bản là 3.000.000 VNĐ trên mỗi đơn hàng/điểm giao hàng.",
+        "source": "7_quy_chế_sử_dụng_sản_phẩm_xanh_express.md, Mục 4.3.2 (iv)"
+    },
+    {
+        "id": "TC_052",
+        "category": "Bảo hiểm Xanh Express - Gói Vàng",
+        "question": "Tôi gửi một kiện hàng điện tử trị giá 40.000.000 VNĐ và có đăng ký Gói bảo hiểm Vàng. Nếu xảy ra thất thoát trong quá trình vận chuyển, mức bồi thường tối đa mà tôi nhận được theo quy định là bao nhiêu?",
+        "expected_answer": "Mức bồi thường tối đa cho Gói Vàng đối với hàng hóa (không phải Tài liệu) là 30.000.000 VNĐ trên mỗi đơn hàng/điểm giao hàng.",
+        "source": "7_quy_chế_sử_dụng_sản_phẩm_xanh_express.md, Mục 4.3.2 (iv)"
+    },
+    {
+        "id": "TC_053",
+        "category": "Bảo hiểm Xanh Express - Miễn trừ bồi thường",
+        "question": "Tôi gửi một lọ nước hoa đắt tiền nhưng không đóng gói chống sốc. Nếu hàng bị vỡ trong quá trình vận chuyển, Xanh SM có bồi thường bảo hiểm không?",
+        "expected_answer": "Không. Xanh SM được miễn trừ trách nhiệm bồi thường nếu thiệt hại xảy ra hoàn toàn do lỗi của Người dùng hoặc do đặc tính tự nhiên, khuyết tật vốn có của hàng hóa mà Người dùng không đóng gói đúng quy cách để đảm bảo an toàn trong điều kiện vận chuyển bình thường.",
+        "source": "7_quy_chế_sử_dụng_sản_phẩm_xanh_express.md, Mục 4.3.1"
+    },
+    {
+        "id": "TC_054",
+        "category": "Bảo hiểm Xanh Express - Loại trừ bảo hiểm",
+        "question": "Tôi gửi một phong bì chứa 10 triệu đồng tiền mặt và mua gói bảo hiểm cao nhất. Nếu thất thoát, tôi có được bồi thường số tiền mặt này không?",
+        "expected_answer": "Không. Tiền mặt thuộc danh mục các mặt hàng tuyệt đối không được gửi qua dịch vụ Xanh Express. Ngoài ra, quy định về bảo hiểm cũng nêu rõ 'Tài liệu' không bao gồm tiền mặt, ngân phiếu hoặc các chứng từ có thể chuyển nhượng khác, do đó không thuộc phạm vi bồi thường bảo hiểm.",
+        "source": "7_quy_chế_sử_dụng_sản_phẩm_xanh_express.md, Mục 3.1.2 (b) và Mục 4.3.2 (iv)"
+    },
+    {
+        "id": "TC_055",
+        "category": "Bảo hiểm Xanh Express - Cơ sở bồi thường",
+        "question": "Khi xảy ra mất mát hàng hóa đã mua bảo hiểm, giá trị bồi thường được căn cứ dựa trên tiêu chí nào?",
+        "expected_answer": "Mức bồi thường sẽ dựa trên giá trị thực tế của hàng hóa tại thời điểm xảy ra thiệt hại (căn cứ vào hóa đơn, chứng từ hợp lệ) nhưng không vượt quá mức bồi thường tối đa của gói bảo hiểm đã chọn.",
+        "source": "7_quy_chế_sử_dụng_sản_phẩm_xanh_express.md, Mục 4.3.2"
+    },
+    {
+        "id": "TC_056",
+        "category": "Kiểm tra hành lý - Quyền hạn Đối tác",
+        "question": "Khi sử dụng dịch vụ Xanh Car, nếu tài xế nghi ngờ hành khách mang theo pháo nổ (hàng cấm lưu thông) trong vali, tài xế có quyền yêu cầu kiểm tra không?",
+        "expected_answer": "Có. Xanh SM và/hoặc Đối tác có quyền kiểm tra hành lý mang theo của Người dùng nếu nghi ngờ hành lý đó thuộc danh mục cấm lưu thông hoặc không được phép vận chuyển theo quy định pháp luật.",
+        "source": "8_quy_chế_sử_dụng_sản_phẩm_xanh_car.md, Mục 3.4"
+    },
+    {
+        "id": "TC_057",
+        "category": "Kiểm tra hành lý - Xanh Express",
+        "question": "Trong dịch vụ Xanh Express, Đối tác vận chuyển có được phép mở gói hàng để kiểm tra tính xác thực của thông tin khai báo không?",
+        "expected_answer": "Có. Đối tác và Xanh SM có quyền (nhưng không có nghĩa vụ) kiểm tra hàng hóa để đảm bảo hàng hóa đó không thuộc danh mục cấm hoặc không được phép vận chuyển.",
+        "source": "7_quy_chế_sử_dụng_sản_phẩm_xanh_express.md, Mục 3.2.4"
+    },
+    {
+        "id": "TC_058",
+        "category": "Kiểm tra hành lý - Trách nhiệm sau kiểm tra",
+        "question": "Việc tài xế đã thực hiện quyền kiểm tra hành lý của khách đồng nghĩa với việc tài xế sẽ chịu trách nhiệm nếu hành lý đó bị hư hỏng sau đó, đúng hay sai?",
+        "expected_answer": "Sai. Việc Xanh SM và/hoặc Đối tác thực hiện quyền kiểm tra hành lý không đồng nghĩa với việc họ phải chịu trách nhiệm đối với hành lý đó. Người dùng vẫn chịu trách nhiệm hoàn toàn.",
+        "source": "6_quy_chế_sử_dụng_sản_phẩm_xanh_bike.md, Mục 3.4"
+    },
+    {
+    "id": "TC_059",
+    "category": "Kiểm tra hành lý - Từ chối phục vụ",
+    "question": "Nếu hành khách từ chối cho tài xế kiểm tra hành lý khi tài xế có nghi ngờ về hàng cấm, tài xế có quyền từ chối chở khách không?",
+    "expected_answer": "Có. Đối tác có quyền từ chối cung cấp Sản Phẩm nếu Người dùng mang theo hành lý mà Đối tác đánh giá là có khả năng vi phạm quy định pháp luật hoặc không đảm bảo nguyên tắc an toàn. Việc kiểm tra là quyền của Đối tác khi có nghi ngờ hàng cấm.",
+    "source": "8_quy_chế_sử_dụng_sản_phẩm_xanh_car.md, Mục 3.3 và Mục 3.4"
+    },
+    {
+        "id": "TC_060",
+        "category": "Kiểm tra hành lý - Mục đích kiểm tra",
+        "question": "Quy chế quy định việc kiểm tra hành lý nhằm mục đích chính là gì?",
+        "expected_answer": "Nhằm đảm bảo hành lý không thuộc danh mục cấm lưu thông, không được phép vận chuyển theo quy định pháp luật và đảm bảo nguyên tắc an toàn cho phương tiện và con người.",
+        "source": "6_quy_chế_sử_dụng_sản_phẩm_xanh_bike.md, Mục 3.4"
+    },
+    {
+        "id": "TC_061",
+        "category": "Quy định hành lý - Trách nhiệm bồi thường",
+        "question": "Trong trường hợp hành khách mang theo thức ăn có mùi (như sầu riêng hoặc hải sản) làm ảnh hưởng đến không gian xe Xanh Car khiến tài xế phải dừng hoạt động để vệ sinh, ai là người chịu chi phí này?",
+        "expected_answer": "Hành khách/Người dùng phải chịu hoàn toàn trách nhiệm và bồi thường mọi thiệt hại phát sinh mà Xanh SM và/hoặc Đối tác phải chịu liên quan tới hành lý/tài sản mang theo.",
+        "source": "8_quy_chế_sử_dụng_sản_phẩm_xanh_car.md, Mục 3.4"
+    },
+    {
+        "id": "TC_062",
+        "category": "Quy định hành lý - Miễn trừ cho Xanh SM",
+        "question": "Nếu hành khách để quên một món đồ giá trị trong túi hành lý gửi ở cốp xe Xanh Bike và sau đó bị thất lạc, Xanh SM có nghĩa vụ bồi thường không?",
+        "expected_answer": "Không. Trong mọi trường hợp, Người dùng/Khách hàng phải chịu trách nhiệm hoàn toàn đối với hành lý mang theo. Xanh SM không chịu trách nhiệm đối với bất kỳ tổn thất nào liên quan đến hành lý của Người dùng.",
+        "source": "6_quy_chế_sử_dụng_sản_phẩm_xanh_bike.md, Mục 3.4"
+    },
+    {
+        "id": "TC_063",
+        "category": "Quy định hành lý - Phạm vi bồi thường",
+        "question": "Nếu hành lý của khách hàng vô tình va đập làm hỏng thiết bị bên trong xe Xanh Car, việc bồi thường được quy định như thế nào?",
+        "expected_answer": "Người dùng phải bồi thường mọi thiệt hại trực tiếp và gián tiếp phát sinh cho Đối tác hoặc Xanh SM do hành lý của mình gây ra, bao gồm cả chi phí sửa chữa hoặc thay thế thiết bị.",
+        "source": "8_quy_chế_sử_dụng_sản_phẩm_xanh_car.md, Mục 3.4"
+    },
+    {
+        "id": "TC_064",
+        "category": "Quy định hành lý - Quyền từ chối (An toàn)",
+        "question": "Tôi muốn mang một tấm kính lớn lên xe Xanh Car. Nếu tài xế đánh giá món đồ này có thể gây nguy hiểm cho hành khách trong xe khi phanh gấp và từ chối chở, hành động này có đúng quy định không?",
+        "expected_answer": "Đúng. Đối tác có quyền từ chối cung cấp Sản Phẩm nếu Người dùng mang theo đồ vật/hành lý mà Đối tác đánh giá là không đảm bảo nguyên tắc an toàn cho phương tiện và con người.",
+        "source": "8_quy_chế_sử_dụng_sản_phẩm_xanh_car.md, Mục 3.3"
+    },
+    {
+        "id": "TC_065",
+        "category": "Quy định hành lý - Quyền từ chối (Pháp luật)",
+        "question": "Tôi đặt Xanh Bike để chở một chiếc tủ kệ gỗ cao vượt quá đầu người lái xe. Tài xế từ chối vì sợ bị Cảnh sát giao thông xử phạt lỗi chở hàng cồng kềnh. Lý do này có được Xanh SM chấp nhận không?",
+        "expected_answer": "Có. Đối tác có quyền từ chối nếu Người dùng mang theo đồ vật quá khổ mà Đối tác đánh giá là có khả năng vi phạm quy định pháp luật về giao thông.",
+        "source": "6_quy_chế_sử_dụng_sản_phẩm_xanh_bike.md, Mục 3.3"
+    },
+    {
+        "id": "TC_066",
+        "category": "Quy định hành lý - Quyền từ chối (Vật nuôi)",
+        "question": "Tôi mang theo một chú chó lớn không rọ mõm lên xe Xanh Car mà không báo trước. Tài xế có quyền từ chối phục vụ tôi ngay tại điểm đón không?",
+        "expected_answer": "Có. Đối tác có quyền từ chối cung cấp Sản Phẩm nếu Người dùng mang theo vật nuôi mà Đối tác đánh giá là không đảm bảo nguyên tắc an toàn hoặc có khả năng vi phạm quy định pháp luật.",
+        "source": "8_quy_chế_sử_dụng_sản_phẩm_xanh_car.md, Mục 3.3"
+    },
+    {
+        "id": "TC_070",
+        "category": "Giá cước taxi",
+        "question": "Tôi ở Hà Nội, đi Xanh SM Car từ điểm A đến điểm B dài 28km thì giá cước tính như thế nào?",
+        "expected_answer": "Giá cước được tính theo từng phân đoạn: 2km đầu (giá mở cửa) là 30.500 VNĐ; từ km tiếp theo đến km thứ 12 là 14.700 VNĐ/km; từ km thứ 13 đến km thứ 25 là 13.800 VNĐ/km; và từ km thứ 26 trở đi là 11.900 VNĐ/km.",
+        "source": "16_bang_gia_taxi_xanhsm.md, Mục: Giá dịch vụ Xanh SM Car tại Hà Nội."
+    },
+    {
+        "id": "TC_071",
+        "category": "Dịch vụ Giao hàng",
+        "question": "Tôi muốn gửi một đơn hàng Xanh Delivery nhưng hàng hơi cồng kềnh, tôi có phải báo trước không và phí tính thế nào?",
+        "expected_answer": "Bạn phải thông báo trước cho Xanh SM nếu hàng hóa cồng kềnh, nặng hoặc cần hỗ trợ bốc xếp. Các chi phí phát sinh sẽ được áp dụng theo chính sách của Xanh SM tại từng thời kỳ.",
+        "source": "15_quy_che_su_dung_san_pham_xanh_delivery.md, Mục 3.1.2, Khoản e."
+    },
+    {
+        "id": "TC_072",
+        "category": "Thuê xe tự lái",
+        "question": "Nếu tôi thuê xe theo tháng nhưng chỉ dùng 15 ngày thì tiền thuê tính thế nào?",
+        "expected_answer": "Với các tháng thuê không tròn ngày, phí thuê xe sẽ được tính theo số ngày sử dụng thực tế. Nguyên tắc tính là: phí mỗi ngày = phí thuê theo tháng chia cho 30.",
+        "source": "12_dieu_khoan_chung_ap_dung_cho_dich_vu_cho_thue_xe.md, Điều 1, Khoản 1.1."
+    },
+    {
+        "id": "TC_073",
+        "category": "Bồi thường hàng hóa",
+        "question": "Tôi gửi tài liệu qua Xanh Delivery và có mua gói bảo hiểm Vàng, nếu mất tài liệu tôi được bồi thường tối đa bao nhiêu?",
+        "expected_answer": "Đối với tài liệu, mức bồi thường tối đa cho gói Vàng là 1.000.000 VNĐ mỗi đơn hàng/điểm giao hàng.",
+        "source": "15_quy_che_su_dung_san_pham_xanh_delivery.md, Mục 4, bảng Mức bảo hiểm và phần định nghĩa Tài liệu ngay dưới bảng."
+    },
+    {
+        "id": "TC_074",
+        "category": "Thanh toán trả sau",
+        "question": "Kỳ đối soát của dịch vụ vận tải trả sau được tính từ ngày nào đến ngày nào?",
+        "expected_answer": "Kỳ đối soát được tính từ 0h00 phút ngày 23 tháng trước đến 22h59 phút ngày 22 của tháng đối soát.",
+        "source": "13_dieu_khoan_chung_ap_dung_voi_dich_vu_van_tai_tra_sau.md, Điều 1, Khoản 1.5."
+    },
+    {
+        "id": "TC_075",
+        "category": "Trách nhiệm Khách hàng",
+        "question": "Nếu tôi làm lộ thông tin tài khoản ứng dụng dẫn đến việc người khác đặt xe, tôi có phải trả tiền không?",
+        "expected_answer": "Có, nếu khách hàng hoặc người sử dụng tiết lộ thông tin truy cập (vô ý hoặc cố ý) dẫn đến bị người khác sử dụng trái phép, khách hàng phải hoàn toàn chịu trách nhiệm thanh toán số tiền cước phát sinh.",
+        "source": "14_dieu_khoan_chung_ap_dung_voi_dich_vu_van_tai_tra_truoc.md, Điều 2, Khoản 2.6."
+    },
+    {
+        "id": "TC_076",
+        "category": "Thuê xe",
+        "question": "Tôi chậm nộp bổ sung tiền cọc thuê xe thì bị phạt thế nào?",
+        "expected_answer": "Khách hàng phải trả thêm lãi suất chậm thanh toán là 0,05%/ngày trên số tiền chậm nộp.",
+        "source": "12_dieu_khoan_chung_ap_dung_cho_dich_vu_cho_thue_xe.md, Điều 2, Khoản 2.3."
+    },
+    {
+        "id": "TC_077",
+        "category": "Dịch vụ Giao hàng",
+        "question": "Những loại hàng hóa nào bị cấm gửi qua Xanh Delivery?",
+        "expected_answer": "Đơn hàng không được chứa hàng hóa cấm lưu hành, hàng hóa nguy hiểm, hàng hóa cấm vận chuyển, động vật hoang dã theo quy định pháp luật.",
+        "source": "15_quy_che_su_dung_san_pham_xanh_delivery.md, Mục 3.1.10."
+    },
+    {
+        "id": "TC_078",
+        "category": "Chống tham nhũng",
+        "question": "Nếu tôi phát hiện tài xế hoặc nhân viên GSM đòi hối lộ, tôi phải thông báo qua đâu?",
+        "expected_answer": "Khách hàng phải thông báo ngay qua Email: v.thanhtraGSM@xanhsm.com.",
+        "source": "13_dieu_khoan_chung_ap_dung_voi_dich_vu_van_tai_tra_sau.md, Mục 9.1."
+    },
+    {
+        "id": "TC_079",
+        "category": "Khuyến mại",
+        "question": "Xanh SM có quyền gì nếu thông tin ưu đãi của Đối tác trên nền tảng không tuân thủ pháp luật?",
+        "expected_answer": "Xanh SM có quyền tạm ngưng/hủy niêm yết thông tin ưu đãi, tắt chức năng quản lý tài khoản đối tác, hủy/tạm dừng chương trình khuyến mại, hoặc giữ lại khoản phải trả để khắc phục vi phạm.",
+        "source": "11_dieu_khoan_va_dieu_kien_dich_vu_khuyen_mai_truc_tuyen.md, Mục 1.2."
+    },
+    {
+        "id": "TC_080",
+        "category": "Giá cước taxi",
+        "question": "Giá cước Xanh SM Car tại Đà Nẵng và TP. Hồ Chí Minh có giống nhau không?",
+        "expected_answer": "Không giống nhau. Ví dụ: Tại Đà Nẵng, giá cước từ km thứ 26 trở đi là 13.000 VNĐ/km, trong khi tại TP. Hồ Chí Minh là 13.300 VNĐ/km.",
+        "source": "16_bang_gia_taxi_xanhsm.md, Mục Giá dịch vụ Xanh SM Car tại Đà Nẵng và Hồ Chí Minh."
+    },
+    {
+        "id": "TC_080",
+        "category": "Thuê xe",
+        "question": "Khi kết thúc hợp đồng thuê xe, trong bao lâu thì tôi phải hoàn thành các nghĩa vụ thanh toán để lấy lại tiền cọc?",
+        "expected_answer": "Trong tối đa 30 ngày làm việc kể từ ngày bàn giao lại xe, khách hàng phải hoàn thành toàn bộ nghĩa vụ và trách nhiệm quy định trong hợp đồng.",
+        "source": "12_dieu_khoan_chung_ap_dung_cho_dich_vu_cho_thue_xe.md, Điều 7, Khoản 7.2.6."
+    },
+    {
+        "id": "TC_081",
+        "category": "Dịch vụ Giao hàng",
+        "question": "Tài liệu theo định nghĩa của Xanh Delivery bao gồm những gì và không bao gồm gì?",
+        "expected_answer": "Tài liệu bao gồm văn bản, chứng thư, hồ sơ, thư từ... nhưng không bao gồm trái phiếu vô danh, phiếu mua hàng, tiền mặt hoặc chứng từ có thể chuyển nhượng khác.",
+        "source": "15_quy_che_su_dung_san_pham_xanh_delivery.md, Mục 4.3.2 (Phần giải thích về Tài liệu)."
+    },
+    {
+        "id": "TC_082",
+        "category": "Thanh toán trả sau",
+        "question": "Tiền cọc của dịch vụ trả sau có được tính lãi không?",
+        "expected_answer": "Tiền cọc không được tính lãi trong suốt thời hạn hợp đồng và thời hạn giải quyết tranh chấp (nếu có).",
+        "source": "13_dieu_khoan_chung_ap_dung_voi_dich_vu_van_tai_tra_sau.md, Điều 2, Khoản 2.1.2."
+    },
+    {
+        "id": "TC_082",
+        "category": "Trách nhiệm đối tác",
+        "question": "Nếu đối tác khuyến mại gặp sự kiện bất khả kháng quá bao lâu thì các bên được quyền chấm dứt thỏa thuận?",
+        "expected_answer": "Nếu sự kiện bất khả kháng kéo dài quá 60 ngày mà không tìm được giải pháp khắc phục, một trong các bên có quyền chấm dứt thỏa thuận.",
+        "source": "11_dieu_khoan_va_dieu_kien_dich_vu_khuyen_mai_truc_tuyen.md, Mục 3.7."
+    },
+    {
+        "id": "TC_083",
+        "category": "Giá cước taxi",
+        "question": "Xanh SM Premium tại Hà Nội sử dụng dòng xe nào?",
+        "expected_answer": "Xanh SM Premium sử dụng dòng xe điện VF e34 và Nerio Green.",
+        "source": "16_bang_gia_taxi_xanhsm.md, Mục Giá dịch vụ Xanh SM Premium."
+    },
+    {
+        "id": "TC_084",
+        "category": "Thuê xe",
+        "question": "Tôi thuê xe nhưng dùng vào mục đích làm xe taxi công nghệ bên hãng khác có được không?",
+        "expected_answer": "Sử dụng xe vào mục đích không được nêu tại Hợp đồng là một trong các căn cứ để GSM có quyền chấm dứt hợp đồng.",
+        "source": "12_dieu_khoan_chung_ap_dung_cho_dich_vu_cho_thue_xe.md, Điều 7, Khoản 7.2.4 (iv)."
+    },
+    {
+        "id": "TC_084",
+        "category": "Giao hàng",
+        "question": "Ai chịu trách nhiệm đóng gói hàng hóa khi gửi Xanh Delivery?",
+        "expected_answer": "Người dùng phải đảm bảo đóng gói hàng hóa đúng quy cách, ghi ký hiệu, mã hiệu đầy đủ rõ ràng phù hợp để vận chuyển trong khoang xe kín.",
+        "source": "15_quy_che_su_dung_san_pham_xanh_delivery.md, Mục 3.1.2, Khoản b."
+    },
+    {
+        "id": "TC_085",
+        "category": "Thanh toán trả sau",
+        "question": "Mức chiết khấu cho dịch vụ trả sau được tính dựa trên số tiền nào?",
+        "expected_answer": "Mức chiết khấu được tính trên Phí Dịch Vụ của từng Chuyến Xe (Phí dịch vụ đã gồm thuế GTGT và phí nền tảng, chưa gồm phí cầu đường, bến bãi).",
+        "source": "13_dieu_khoan_chung_ap_dung_voi_dich_vu_van_tai_tra_sau.md, Điều 2, Khoản 2.3.1."
+    },
+    {
+        "id": "TC_086",
+        "category": "Bồi thường",
+        "question": "Nếu tôi không mua bảo hiểm hàng hóa cho Xanh Delivery, khi mất hàng tôi được đền bù tối đa bao nhiêu?",
+        "expected_answer": "Nếu người dùng không mua bảo hiểm, mức bồi thường sẽ được áp dụng theo quy định của pháp luật hoặc theo thỏa thuận riêng.",
+        "source": "15_quy_che_su_dung_san_pham_xanh_delivery.md, Mục 4.3.2 (v)."
+    },
+    {
+        "id": "TC_086",
+        "category": "Giá cước",
+        "question": "Phí cầu đường, bến bãi có nằm trong Phí dịch vụ taxi trả sau khi tính chiết khấu không?",
+        "expected_answer": "Không. Phí dịch vụ để tính chiết khấu không bao gồm phí cầu đường, phà, bến bãi.",
+        "source": "13_dieu_khoan_chung_ap_dung_voi_dich_vu_van_tai_tra_sau.md, Điều 2, Khoản 2.2.2."
+    },
+    {
+        "id": "TC_087",
+        "category": "Thuê xe",
+        "question": "GSM có quyền khóa xe tôi đang thuê nếu tôi chậm thanh toán không?",
+        "expected_answer": "Có, nếu khách hàng chậm thanh toán quá 10 ngày kể từ ngày hết hạn thanh toán, GSM có quyền hạn chế/khóa hệ thống để dừng hoạt động của xe.",
+        "source": "12_dieu_khoan_chung_ap_dung_cho_dich_vu_cho_thue_xe.md, Điều 3, Khoản 3.3."
+    },
+    {
+        "id": "TC_087",
+        "category": "Giao hàng",
+        "question": "Nếu đối tác giao hàng thất bại thì quy trình tiếp theo là gì?",
+        "expected_answer": "Đối tác liên hệ với Người dùng để hoàn hàng với Đơn Hàng giao thất bại.",
+        "source": "15_quy_che_su_dung_san_pham_xanh_delivery.md, Mục 2, Bước 3."
+    },
+    {
+        "id": "TC_087",
+        "category": "Thanh toán",
+        "question": "Tôi có thể thanh toán phí thuê xe bằng tiền mặt không?",
+        "expected_answer": "Theo quy định, khách hàng sẽ thanh toán các loại phí bằng cách chuyển khoản cho GSM vào tài khoản ngân hàng Techcombank được chỉ định.",
+        "source": "12_dieu_khoan_chung_ap_dung_cho_dich_vu_cho_thue_xe.md, Điều 3, Khoản 3.1."
+    },
+    {
+        "id": "TC_087",
+        "category": "Chống hối lộ",
+        "question": "Mức phạt vi phạm quy định chống hối lộ của Xanh SM đối với khách hàng là bao nhiêu?",
+        "expected_answer": "Phạt vi phạm 150.000.000 VNĐ/lần hoặc 10% giá trị Hợp đồng, tùy thuộc số tiền nào lớn hơn.",
+        "source": "13_dieu_khoan_chung_ap_dung_voi_dich_vu_van_tai_tra_sau.md, Mục 9.2 (iii)."
+    },
+    {
+        "id": "TC_088",
+        "category": "Giao hàng",
+        "question": "Tôi gửi hàng hóa (không phải tài liệu) và mua gói bảo hiểm Bạc, mức bồi thường tối đa là bao nhiêu?",
+        "expected_answer": "Mức bồi thường tối đa cho hàng hóa không phải tài liệu với gói Bạc là 10.000.000 VNĐ/đơn hàng.",
+        "source": "15_quy_che_su_dung_san_pham_xanh_delivery.md, Mục 3.2.4, bảng Mức bảo hiểm."
+    },
+    {
+        "id": "TC_089",
+        "category": "Thuê xe",
+        "question": "GSM gửi bảng tổng hợp phí thuê xe vào thời gian nào hàng tháng?",
+        "expected_answer": "Trong 05 ngày làm việc đầu tiên của tháng T+1.",
+        "source": "12_dieu_khoan_chung_ap_dung_cho_dich_vu_cho_thue_xe.md, Điều 3, Khoản 3.2.b (i)."
+    },
+    {
+        "id": "TC_090",
+        "category": "Thanh toán trả sau",
+        "question": "Hạn mức (Dư nợ tối đa) trong dịch vụ trả sau được quy định ở đâu?",
+        "expected_answer": "Hạn mức được nêu cụ thể tại Hợp đồng ký kết giữa khách hàng và GSM.",
+        "source": "13_dieu_khoan_chung_ap_dung_voi_dich_vu_van_tai_tra_sau.md, Điều 1, Khoản 1.4."
+    },
+    {
+        "id": "TC_091",
+        "category": "Khuyến mại",
+        "question": "Nếu tôi là đối tác cung cấp sản phẩm trên nền tảng, tôi có được tự ý hủy ưu đãi không?",
+        "expected_answer": "Mọi thay đổi hoặc hủy bỏ ưu đãi phải tuân theo thỏa thuận với Xanh SM; Xanh SM có quyền tạm ngưng hoặc hủy niêm yết bất kỳ ưu đãi nào.",
+        "source": "11_dieu_khoan_va_dieu_kien_dich_vu_khuyen_mai_truc_tuyen.md, Mục 1.1."
+    },
+    {
+        "id": "TC_092",
+        "category": "Giá cước taxi",
+        "question": "Giá mở cửa của dịch vụ Xanh SM Car tại Hà Nội áp dụng cho quãng đường bao nhiêu km đầu?",
+        "expected_answer": "Giá mở cửa 30.500 VNĐ áp dụng cho 2 km đầu tiên.",
+        "source": "16_bang_gia_taxi_xanhsm.md, Mục Giá dịch vụ Xanh SM Car tại Hà Nội."
+    },
+    {
+        "id": "TC_093",
+        "category": "Thuê xe",
+        "question": "Sau khi nhận bảng tổng hợp phí thuê xe, tôi có mấy ngày để phản hồi nếu thấy số liệu sai?",
+        "expected_answer": "Bạn có 03 ngày kể từ khi nhận được Bảng Tổng Hợp để xem xét, đối chiếu và phản hồi.",
+        "source": "12_dieu_khoan_chung_ap_dung_cho_dich_vu_cho_thue_xe.md, Điều 3, Khoản 3.2.b (ii)."
+    },
+    {
+        "id": "TC_094",
+        "category": "Giao hàng",
+        "question": "Tài xế có quyền từ chối giao hàng không?",
+        "expected_answer": "Có, đối tác (tài xế) có thể từ chối giao hàng nếu người dùng không cung cấp hướng dẫn đầy đủ và khả thi.",
+        "source": "15_quy_che_su_dung_san_pham_xanh_delivery.md, Mục 3.1.8."
+    },
+    {
+        "id": "TC_095",
+        "category": "Thanh toán trả sau",
+        "question": "Mã Pin trong thanh toán bằng Thẻ Xanh SM có mấy chữ số?",
+        "expected_answer": "Mã Pin gồm 6 số do hệ thống của GSM khởi tạo ngẫu nhiên.",
+        "source": "13_dieu_khoan_chung_ap_dung_voi_dich_vu_van_tai_tra_sau.md, Điều 1, Khoản 1.13."
+    },
+    {
+        "id": "TC_096",
+        "category": "Thuê xe",
+        "question": "Nếu tôi không thanh toán tiền cọc thuê xe đúng hạn thì GSM có quyền gì?",
+        "expected_answer": "GSM có quyền từ chối bàn giao xe mà không phải chịu bất kỳ trách nhiệm nào.",
+        "source": "12_dieu_khoan_chung_ap_dung_cho_dich_vu_cho_thue_xe.md, Điều 2, Khoản 2.2."
+    },
+    {
+        "id": "TC_097",
+        "category": "Giao hàng",
+        "question": "Người nhận hàng có thể thanh toán bằng tiền mặt cho đơn hàng Xanh Delivery không?",
+        "expected_answer": "Có, Đối tác (tài xế) nhận thanh toán của Người dùng nếu Người dùng chọn phương thức thanh toán bằng tiền mặt.",
+        "source": "15_quy_che_su_dung_san_pham_xanh_delivery.md, Mục 2, Bước 4."
+    },
+    {
+        "id": "TC_098",
+        "category": "Thông tin liên hệ",
+        "question": "Tổng đài hỗ trợ của dịch vụ Xanh Delivery là số nào?",
+        "expected_answer": "Tổng đài hỗ trợ: 02471096839.",
+        "source": "15_quy_che_su_dung_san_pham_xanh_delivery.md, Mục 2 (Cuối Bước 5)."
+    },
+    {
+        "id": "TC_099",
+        "category": "Thuê xe",
+        "question": "Nếu hai bên không thống nhất được bảng đối soát phí thuê xe thì GSM sẽ làm gì?",
+        "expected_answer": "GSM sẽ xuất hóa đơn theo số liệu của Bảng Tổng Hợp Phí mà GSM đã gửi. Khách hàng phải thanh toán trước, phần chênh lệch sẽ được đối trừ ở kỳ tiếp theo sau khi trao đổi.",
+        "source": "12_dieu_khoan_chung_ap_dung_cho_dich_vu_cho_thue_xe.md, Điều 3, Khoản 3.2.b (iii)."
+    },
+    {
+        "id": "TC_100",
+        "category": "Định nghĩa dịch vụ",
+        "question": "Dịch vụ vận tải của GSM bao gồm những loại hình nào?",
+        "expected_answer": "Bao gồm: (a) vận tải hành khách bằng xe ô tô điện, (b) vận chuyển hành khách bằng xe máy điện, (c) vận chuyển hàng hóa bằng xe máy điện.",
+        "source": "13_dieu_khoan_chung_ap_dung_voi_dich_vu_van_tai_tra_sau.md, Điều 1, Khoản 1.3."
+    },
+    {
+        "id": "TC_101",
+        "category": "Thanh toán trả trước",
+        "question": "Tài khoản quản lý (TKQL) có được chuyển nhượng cho người khác không?",
+        "expected_answer": "TKQL không được chuyển nhượng hoặc chuyển giao cho bên thứ ba khi không có chấp thuận bằng văn bản của GSM.",
+        "source": "14_dieu_khoan_chung_ap_dung_voi_dich_vu_van_tai_tra_truoc.md, Điều 2, Khoản 2.8."
+    },
+    {
+        "id": "TC_102",
+        "category": "Khuyến mại",
+        "question": "Nếu thỏa thuận khuyến mại bị chấm dứt, đối tác có còn phải cung cấp sản phẩm cho người dùng đã nhận ưu đãi trước đó không?",
+        "expected_answer": "Có, đối tác vẫn có trách nhiệm cung cấp Sản Phẩm cho Người Dùng theo các điều khoản và điều kiện của Ưu Đãi nếu Ưu Đãi được sử dụng trước thời điểm chấm dứt Thỏa Thuận.",
+        "source": "11_dieu_khoan_va_dieu_kien_dich_vu_khuyen_mai_truc_tuyen.md, Mục 3.6."
+    },
+    {
+        "id": "TC_103",
+        "category": "Giá cước taxi",
+        "question": "Tại Hà Nội, giá cước mỗi km của Xanh SM Premium từ km thứ 13 đến km thứ 25 là bao nhiêu?",
+        "expected_answer": "Giá cước cho phân đoạn này là 14.500 VNĐ/km.",
+        "source": "16_bang_gia_taxi_xanhsm.md, Mục Chi tiết bảng giá cước dịch vụ Xanh SM Premium tại Hà Nội."
+    },
+    {
+        "id": "TC_104",
+        "category": "Giao hàng",
+        "question": "Khách hàng gửi hàng qua Xanh Delivery cần đảm bảo giấy tờ gì?",
+        "expected_answer": "Người dùng phải đảm bảo có đầy đủ giấy tờ hợp pháp về Hàng hóa và cung cấp cho Đối tác vận chuyển và/hoặc Xanh SM trước khi thực hiện vận chuyển.",
+        "source": "15_quy_che_su_dung_san_pham_xanh_delivery.md, Mục 3.1.2, Khoản a."
+    },
+    {
+        "id": "TC_105",
+        "category": "Thuê xe",
+        "question": "Phí phụ thu km vượt mức khi thuê xe được tính dựa trên văn bản nào?",
+        "expected_answer": "Phí cụ thể sẽ theo quy định tại Hợp đồng và Chính sách dịch vụ (CSDV) của GSM.",
+        "source": "12_dieu_khoan_chung_ap_dung_cho_dich_vu_cho_thue_xe.md, Điều 1, Khoản 1.2."
+    },
+    {
+        "id": "TC_106",
+        "category": "Bồi thường",
+        "question": "Nếu tôi mua gói bảo hiểm Cơ bản cho hàng hóa, mức bồi thường tối đa là bao nhiêu?",
+        "expected_answer": "Mức bồi thường tối đa cho gói Cơ bản là 3.000.000 VNĐ/đơn hàng (đối với hàng hóa không phải tài liệu) và 500.000 VNĐ (đối với tài liệu).",
+        "source": "15_quy_che_su_dung_san_pham_xanh_delivery.md, Mục 3.2.4, bảng Mức bảo hiểm."
+    },
+    {
+        "id": "TC_107",
+        "category": "Thanh toán trả sau",
+        "question": "GSM sẽ hoàn trả tiền cọc trả sau trong vòng bao nhiêu ngày sau khi ngừng dịch vụ?",
+        "expected_answer": "Trong vòng 30 ngày kể từ ngày dịch vụ bị ngừng cung cấp hoặc hoàn thành công nợ tồn đọng (tùy thời điểm nào đến sau).",
+        "source": "13_dieu_khoan_chung_ap_dung_voi_dich_vu_van_tai_tra_sau.md, Điều 2, Khoản 2.1.2."
+    },
+    {
+        "id": "TC_108",
+        "category": "Bảo mật",
+        "question": "Tôi phải làm gì nếu thông tin truy cập tài khoản ứng dụng bị đánh cắp?",
+        "expected_answer": "Khách hàng phải thông báo ngay cho GSM để GSM phong tỏa tài khoản quản lý và/hoặc tài khoản ứng dụng.",
+        "source": "14_dieu_khoan_chung_ap_dung_voi_dich_vu_van_tai_tra_truoc.md, Điều 2, Khoản 2.9."
+    },
+    {
+        "id": "TC_109",
+        "category": "Khuyến mại",
+        "question": "Xanh SM có trách nhiệm gì trong việc xử lý khiếu nại của người dùng đối với đối tác khuyến mại?",
+        "expected_answer": "Xanh SM sẽ tạo điều kiện thuận lợi và chuyển thông tin liên quan đến Đối tác để Đối tác trực tiếp xử lý các khiếu nại của Người dùng.",
+        "source": "11_dieu_khoan_va_dieu_kien_dich_vu_khuyen_mai_truc_tuyen.md, Mục 1.4."
+    },
+    {
+        "id": "TC_110",
+        "category": "Giá cước taxi",
+        "question": "Ở TP. Hồ Chí Minh, giá cước km thứ 3 của Xanh SM Car là bao nhiêu?",
+        "expected_answer": "Giá cước cho các km tiếp theo đến km 12 tại TP. Hồ Chí Minh là 15.200 VNĐ/km.",
+        "source": "16_bang_gia_taxi_xanhsm.md, Mục Giá dịch vụ Xanh SM Car tại Hồ Chí Minh."
+    },
+    {
+        "id": "TC_111",
+        "category": "Giao hàng",
+        "question": "Điều kiện để một đơn hàng Xanh Delivery được chấp nhận là gì?",
+        "expected_answer": "Không chứa hàng cấm/nguy hiểm; có đầy đủ thông tin gửi/nhận; có đối tác xác nhận nhận đơn; được đóng gói bọc theo yêu cầu.",
+        "source": "15_quy_che_su_dung_san_pham_xanh_delivery.md, Mục 3.1.10."
+    },
+    {
+        "id": "TC_112",
+        "category": "Thuê xe",
+        "question": "Tôi có thể yêu cầu GSM giao xe tại nhà không?",
+        "expected_answer": "Có, nhưng đây là dịch vụ phụ thu (Phí giao xe, trả xe tại địa điểm Khách hàng chỉ định).",
+        "source": "12_dieu_khoan_chung_ap_dung_cho_dich_vu_cho_thue_xe.md, Điều 1, Khoản 1.2 (ii)."
     }
 ]
