@@ -1,105 +1,206 @@
-﻿# Chatbot Tai Xe Xanh SM
+﻿# Chatbot Tài Xế Xanh SM
 
-Tai lieu goc cho dev trong team de setup, chay va nang cap luong RAG `v3`.
+Tài liệu gốc cho dev trong team để setup, chạy và nâng cấp trợ lý AI cho tài xế Xanh SM.
 
-Kien truc muc tieu hien tai:
+Kiến trúc hiện tại:
 
-`data_pipeline -> SQLite/FAISS -> backend agent LangGraph -> frontend Streamlit`
+`data_pipeline -> SQLite/FAISS -> Hybrid Retrieval -> LangGraph Agent v4 -> FastAPI -> Streamlit`
 
-README nay lay `v3` lam huong chinh, nhung van ghi ro cac cho wiring hien tai chua dong bo de tranh chay nham entrypoint.
+README này bám theo runtime đang dùng trong repo:
 
-## 1. Muc tieu du an
+- Backend API: `backend_ai/app/main_v3.py`
+- Agent graph: `backend_ai/app/core/agent_graph_v4.py`
+- Prompt chính: `backend_ai/app/prompts/system_prompt_v4.py`
 
-He thong ho tro tai xe Xanh SM theo mo hinh RAG:
+## 1. Mục tiêu dự án
 
-- Thu thap va xu ly tai lieu chinh sach.
-- Build knowledge base dang `SQLite + FAISS`.
-- Backend dung LangGraph de classify, retrieve, answer, va escalate khi do tin cay thap.
-- Frontend Streamlit goi API `/chat` de demo hoi dap.
+Hệ thống hỗ trợ tài xế Xanh SM theo mô hình RAG:
 
-## 2. Cau truc thu muc quan trong
+- Tra cứu nhanh chính sách, điều khoản và quy trình xử lý sự cố.
+- Trả lời dựa trên tài liệu nội bộ đã được chunk và lập chỉ mục.
+- Có cơ chế nhận biết câu hỏi mơ hồ, cần làm rõ hoặc cần chuyển sang hỗ trợ con người.
+- Có `confidence`, `escalate`, `sources` và `feedback` để kiểm soát rủi ro.
+
+## 2. Kiến trúc tổng quan
+
+Luồng chính của hệ thống:
+
+1. Thu thập và xử lý tài liệu trong `data_pipeline/`.
+2. Build knowledge base cục bộ dạng `SQLite + FAISS`.
+3. Backend nhận câu hỏi qua FastAPI.
+4. LangGraph agent v4 chạy tuần tự:
+   - `classify`
+   - `rephrase`
+   - `retrieve`
+   - `answer`
+   - `escalate`
+5. Frontend Streamlit hiển thị câu trả lời, nguồn tham khảo và trạng thái tin cậy.
+
+## 3. Cấu trúc thư mục quan trọng
 
 ### Data pipeline
 
 - `data_pipeline/scrapers/test_crawl.py`
-  - Crawl noi dung policy tu website Xanh SM va luu ra Markdown trong `data_pipeline/raw_data/`.
+  - Crawl nội dung policy từ website Xanh SM và lưu về `data_pipeline/raw_data/`.
 - `data_pipeline/processed_data/`
-  - Noi dat `chunks.jsonl` sau khi xu ly du lieu.
+  - Nơi chứa dữ liệu đã chuẩn hóa, đặc biệt là `chunks.jsonl`.
 - `data_pipeline/db_setup/setup_db.py`
-  - Build `knowledge_base.sqlite` va `knowledge_base.faiss` tu `chunks.jsonl`.
-  - Sinh embedding bang `sentence-transformers`.
+  - Build `knowledge_base.sqlite` và `knowledge_base.faiss`.
+  - Sinh embedding bằng `sentence-transformers`.
 
 ### Backend AI
 
 - `backend_ai/app/main.py`
-  - API cu / runtime co ban.
+  - API cũ, chỉ nên giữ để tham khảo.
 - `backend_ai/app/main_v2.py`
-  - Ban trung gian: tool-calling graph co `thread_id` memory.
+  - Bản trung gian với graph tool-calling và memory theo `thread_id`.
 - `backend_ai/app/main_v3.py`
-  - API schema moi nhat de tham chieu tai lieu.
-  - Bo sung `confidence`, `query_type`, `escalate`, `sources`, `feedback`.
-- `backend_ai/app/core/agent_graph.py`
-  - Graph tool-calling co ban dung retriever tool.
-- `backend_ai/app/core/agent_graph_v2.py`
-  - Ban v2, ve co ban giong `agent_graph.py` nhung duoc tach rieng de thu nghiem.
+  - Entry point API hiện tại.
+  - Trả về `reply`, `confidence`, `query_type`, `escalate`, `sources`, `thread_id`.
+  - Có endpoint `POST /feedback`.
 - `backend_ai/app/core/agent_graph_v3.py`
-  - Graph nhieu node theo huong v3:
-  - `classify -> retrieve -> answer -> escalate`
+  - Bản agent v3, đã tách các node cơ bản.
+- `backend_ai/app/core/agent_graph_v4.py`
+  - Bản agent mới nhất đang dùng.
+  - Graph hiện tại:
+    - `classify -> rephrase -> retrieve -> answer -> escalate`
+  - Có thêm:
+    - phân loại `driver` / `prospect`
+    - phân loại `policy` / `incident` / `recruitment` / `general`
+    - rewrite câu hỏi theo lịch sử hội thoại
+    - memory theo `thread_id`
 - `backend_ai/app/prompts/system_prompt.py`
-  - Prompt cu cho graph tool-calling.
+  - Prompt cũ của các bản đầu.
 - `backend_ai/app/prompts/system_prompt_v3.py`
-  - Prompt set moi cho v3, tach rieng cho `classify`, `answer`, `escalate`.
+  - Prompt cho agent v3.
+- `backend_ai/app/prompts/system_prompt_v4.py`
+  - Prompt mới nhất cho v4:
+    - `CLASSIFY_PROMPT`
+    - `REPHRASE_PROMPT`
+    - `ANSWER_DRIVER_PROMPT`
+    - `ANSWER_PROSPECT_PROMPT`
+    - `ESCALATE_DRIVER_PROMPT`
+    - `ESCALATE_PROSPECT_PROMPT`
 - `backend_ai/app/utils/retrieval_advanced.py`
-  - Hybrid retriever:
-  - BM25 + FAISS + RRF + Cross-Encoder reranker.
+  - Hybrid retrieval:
+    - FAISS dense search
+    - BM25 sparse search
+    - Reciprocal Rank Fusion
+    - Cross-encoder reranker
 - `backend_ai/app/core/config.py`
-  - Cau hinh duong dan toi `knowledge_base.sqlite`, `knowledge_base.faiss`, embedding model, LLM model.
+  - Cấu hình đường dẫn DB/FAISS, model embedding và model LLM.
 
 ### Frontend
 
 - `frontend/web_demo/app.py`
-  - Streamlit chat demo, goi `http://localhost:8000/chat`.
+  - Streamlit chat UI.
+  - Gọi `POST /chat` đến backend.
+  - Giữ `thread_id` trong session để agent nhớ hội thoại theo phiên.
 
-### Tai lieu va ha tang
+### Tài liệu và đánh giá
 
-- `docs/SYSTEM_ARCHITECTURE.md`
-  - Mo ta kien truc tong quan muc tieu.
-- `docs/API_CONTRACT.md`
-  - Contract cu, can doi chieu lai voi `main_v3.py`.
-- `.env.example`
-  - Mau bien moi truong hien tai, van con dau vet Qdrant cu.
-- `docker-compose.yml`
-  - File compose cu, chua phan anh day du luong RAG v3 hien tai.
+- `spec.md`
+  - SPEC draft / logic sản phẩm AI.
+- `spec-final.md`
+  - Phiên bản hoàn thiện của spec nếu team đã chốt.
+- `plan_hackathon.md`
+  - Kế hoạch triển khai và tiến độ hackathon.
+- `reflection.md`
+  - Tổng kết, bài học, điểm đã làm được và chưa làm được.
+- `prototype-readme.md`
+  - Tài liệu phục vụ demo prototype.
+- `qa_eval/`
+  - Thư mục dành cho evaluation và test cases.
 
-## 3. Trang thai hien tai / Known gaps
+## 4. Agent graph v4 hoạt động như thế nào
 
-README nay huong theo `v3`, nhung repo hien tai chua dong bo hoan toan:
+### Bước 1: `classify`
 
-- `backend_ai/app/main_v3.py` da import dung `app.core.agent_graph_v3`, nhung o block `if __name__ == "__main__"` van goi `uvicorn.run("app.main:app", ...)` thay vi `app.main_v3:app`.
-- `.env.example` van co bien Qdrant cu, trong khi luong retrieval hien tai dang dua tren `SQLite + FAISS`.
-- `docs/API_CONTRACT.md` chua cap nhat theo response schema moi nhat cua `main_v3.py`.
+Node `classify` xác định:
 
-Hieu ngan gon:
+- `user_persona`: `driver` hay `prospect`
+- `query_type`: `policy`, `incident`, `recruitment`, `general`
+- `needs_clarification`: có cần hỏi làm rõ hay không
 
-- `v3` la kien truc muc tieu va la chuan de tai lieu hoa.
-- Runtime thuc te hien tai da noi vao `agent_graph_v3`, nhung van con mot vai dau vet cau hinh / tai lieu cu.
+Mục tiêu:
 
-## 4. Setup moi truong
+- Tách câu hỏi của tài xế đang chạy xe với người đang tìm hiểu để đăng ký.
+- Tránh dùng chung một prompt cho hai tình huống rất khác nhau.
+- Nếu câu hỏi quá mơ hồ, hệ thống dừng sớm để hỏi lại thay vì trả lời đoán.
 
-### Yeu cau
+### Bước 2: `rephrase`
 
-- Python 3.11+ khuyen nghi.
-- Co `pip` va kha nang tai model Hugging Face.
-- Co `OPENAI_API_KEY` hop le de goi LLM.
+Node `rephrase` viết lại câu hỏi mới nhất thành một `search_query` độc lập, đầy đủ ngữ cảnh.
 
-### Tao virtual environment
+Ví dụ:
+
+- User turn 1: “Điều khoản bao gồm những gì?”
+- User turn 2: “Cái bạn vừa nói ý”
+
+Thì `rephrase` có nhiệm vụ biến câu thứ hai thành một truy vấn rõ nghĩa hơn để retrieval tìm đúng tài liệu.
+
+### Bước 3: `retrieve`
+
+Node `retrieve` dùng `search_query` để truy xuất tài liệu bằng `HybridRAGRetriever`.
+
+Retriever hiện tại gồm:
+
+- Dense search bằng FAISS
+- Sparse search bằng BM25
+- Hợp nhất kết quả bằng RRF
+- Chấm lại bằng Cross-encoder reranker
+
+Mục tiêu:
+
+- Dense search bắt được ý nghĩa gần đúng.
+- BM25 bắt được từ khóa policy chính xác.
+- Reranker chọn lại top chunk liên quan nhất để giảm nhiễu.
+
+### Bước 4: `answer`
+
+Node `answer` chọn prompt theo `user_persona`:
+
+- `driver` dùng prompt tra cứu chính sách
+- `prospect` dùng prompt tư vấn, mềm hơn và có CTA
+
+Node này trả về:
+
+- `answer`
+- `confidence`
+- `has_money_figure`
+- `escalate`
+
+Logic hiện tại:
+
+- Nếu không có context: `escalate = True`
+- Nếu có số tiền nhưng độ tin cậy thấp: `escalate = True`
+- Nếu độ tin cậy thấp nhưng vẫn có thông tin hữu ích: vẫn trả lời, giữ `confidence = low`
+
+### Bước 5: `escalate`
+
+Node `escalate` chỉ chạy khi:
+
+- không tìm được context
+- hoặc có câu trả lời chứa thông tin nhạy cảm nhưng chưa đủ chắc chắn
+
+Node này tạo câu trả lời an toàn hơn và hướng người dùng sang hotline / hỗ trợ con người.
+
+## 5. Setup môi trường
+
+### Yêu cầu
+
+- Python 3.11+ khuyến nghị
+- Có `pip`
+- Có `OPENAI_API_KEY`
+
+### Tạo virtual environment
 
 ```powershell
 python -m venv .venv
 .venv\Scripts\activate
 ```
 
-### Cai dependencies
+### Cài dependencies
 
 Backend:
 
@@ -113,122 +214,73 @@ Data pipeline:
 pip install -r data_pipeline/requirements.txt
 ```
 
-### Tao file moi truong
+### Tạo file môi trường
 
-```powershell
-Copy-Item .env.example .env
-```
+Repo hiện đang dùng file `.env`.
 
-Bien toi thieu can co trong `.env`:
+Ví dụ tối thiểu:
 
 ```env
 OPENAI_API_KEY=your_openai_api_key_here
+BACKEND_URL=http://localhost:8000/chat
 ```
 
-Luu y:
+Lưu ý:
 
-- `.env.example` hien con `QDRANT_URL` va `QDRANT_API_KEY`, nhung luong code retrieval hien tai khong dung Qdrant lam mac dinh.
-- Cau hinh thuc te backend doc chu yeu tu `backend_ai/app/core/config.py`.
+- README cũ từng nhắc `.env.example`, nhưng hiện tại repo không còn file này.
+- Cấu hình lõi của backend vẫn nằm trong `backend_ai/app/core/config.py`.
 
-## 5. Data flow de nang cap RAG
+## 6. Build knowledge base
 
-Trinh tu mong muon de chay end-to-end:
-
-1. Crawl / thu thap du lieu policy vao `data_pipeline/raw_data/`.
-2. Chuan hoa du lieu thanh `data_pipeline/processed_data/chunks.jsonl`.
-3. Chay `data_pipeline/db_setup/setup_db.py` de build:
-   - `knowledge_base.sqlite`
-   - `knowledge_base.faiss`
-4. Khoi dong backend de load retriever.
-5. Frontend goi `/chat` de gui cau hoi.
-
-## 6. Runbook
-
-### 6.1. Build knowledge base
-
-Mac dinh `setup_db.py` doc:
+Mặc định `setup_db.py` đọc từ:
 
 - `data_pipeline/processed_data/chunks.jsonl`
 
-Va sinh:
+Và sinh ra:
 
 - `data_pipeline/db_setup/knowledge_base.sqlite`
 - `data_pipeline/db_setup/knowledge_base.faiss`
 
-Lenh chay:
+Lệnh chạy:
 
 ```powershell
 python data_pipeline/db_setup/setup_db.py
 ```
 
-Neu can truyen tham so:
+Hoặc truyền tham số rõ ràng:
 
 ```powershell
 python data_pipeline/db_setup/setup_db.py --chunks-file data_pipeline/processed_data/chunks.jsonl --sqlite-path data_pipeline/db_setup/knowledge_base.sqlite --faiss-path data_pipeline/db_setup/knowledge_base.faiss
 ```
 
-### 6.2. Chay backend FastAPI
+## 7. Chạy hệ thống
 
-README nay coi `backend_ai/app/main_v3.py` la API tham chieu chinh.
+### Chạy backend FastAPI
 
-Lenh chay:
+Lệnh đang dùng:
 
 ```powershell
 python backend_ai/app/main_v3.py
 ```
 
-Hoac:
-
-```powershell
-uvicorn app.main_v3:app --host 0.0.0.0 --port 8000 --reload
-```
-
-Neu dung lenh `uvicorn`, chay trong thu muc `backend_ai`:
+Hoặc chạy bằng `uvicorn` trong thư mục `backend_ai`:
 
 ```powershell
 cd backend_ai
 uvicorn app.main_v3:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-### 6.3. Chay frontend Streamlit
+### Chạy frontend Streamlit
 
 ```powershell
 streamlit run frontend/web_demo/app.py
 ```
 
-Frontend hien dang goi truc tiep:
+Frontend hiện gọi:
 
 - `POST http://localhost:8000/chat`
 
-### 6.4. Health check nhanh
-
-```powershell
-curl http://localhost:8000/health
-```
-
-Response ky vong:
-
-```json
-{"status":"ok"}
-```
-
-### 6.5. Test nhanh `/chat`
-
-```powershell
-curl -X POST http://localhost:8000/chat ^
-  -H "Content-Type: application/json" ^
-  -d "{\"message\":\"Thuong huy chuyen nhu the nao?\",\"thread_id\":\"demo-thread-1\"}"
-```
-
-### 6.6. Test nhanh `/feedback`
-
-```powershell
-curl -X POST http://localhost:8000/feedback ^
-  -H "Content-Type: application/json" ^
-  -d "{\"thread_id\":\"demo-thread-1\",\"message_index\":0,\"reason\":\"wrong_case\",\"detail\":\"Tra loi chua dung ngu canh\"}"
-```
-
-## 7. API contract tham chieu theo `main_v3.py`
+## 8. API tham chiếu
 
 ### `POST /chat`
 
@@ -241,7 +293,7 @@ Request:
 }
 ```
 
-`thread_id` co the de trong. Neu bo trong, backend se tu sinh UUID moi.
+`thread_id` có thể để trống. Nếu để trống, backend sẽ tự sinh UUID mới.
 
 Response:
 
@@ -254,6 +306,7 @@ Response:
   "sources": [
     {
       "title": "string",
+      "url": "string",
       "chunk_id": 123,
       "rerank_score": 0.91
     }
@@ -262,12 +315,13 @@ Response:
 }
 ```
 
-Y nghia field:
+Ý nghĩa field:
 
-- `confidence`: muc tin cay cua cau tra loi, du kien `high | low`.
-- `query_type`: loai query do node classify xac dinh, du kien `policy | incident | general`.
-- `escalate`: `true` khi frontend nen hien canh bao va dieu huong hotline.
-- `sources`: metadata cua chunk da retrieve / rerank.
+- `confidence`: độ tin cậy của câu trả lời
+- `query_type`: loại câu hỏi sau khi classify
+- `escalate`: có cần chuyển sang hỗ trợ người thật hay không
+- `sources`: metadata của các chunk được retrieve
+- `thread_id`: định danh phiên hội thoại để giữ lịch sử
 
 ### `POST /feedback`
 
@@ -277,7 +331,7 @@ Request:
 {
   "thread_id": "string",
   "message_index": 0,
-  "reason": "old_info",
+  "reason": "wrong_case",
   "detail": "string"
 }
 ```
@@ -287,35 +341,45 @@ Response:
 ```json
 {
   "status": "received",
-  "message": "Cam on phan hoi cua ban. Chung toi se xem xet trong 24h."
+  "message": "Cảm ơn phản hồi của bạn. Chúng tôi sẽ xem xét trong 24h."
 }
 ```
 
-## 8. Version notes
+## 9. Trạng thái hiện tại / Known gaps
+
+Những điểm đã khớp runtime hiện tại:
+
+- `main_v3.py` đang import `agent_graph_v4`
+- `agent_graph_v4.py` đang dùng prompt `system_prompt_v4`
+- `agent_graph_v4.py` đã có node `rephrase`
+
+Những điểm còn lệch hoặc cần dọn tiếp:
+
+- Trong block `if __name__ == "__main__"` của `backend_ai/app/main_v3.py`, lệnh `uvicorn.run(...)` vẫn đang trỏ tới `app.main:app`, chưa đổi sang `app.main_v3:app`.
+- Frontend chưa phản ánh đầy đủ tất cả trạng thái backend trả về nếu team muốn demo trọn vẹn `confidence`, `escalate` và `feedback loop`.
+- Tài liệu trong `docs/` chưa được cập nhật đồng bộ theo agent v4.
+
+## 10. Version notes
 
 - `v1`
-  - Skeleton / dummy response FastAPI.
+  - Skeleton API, trả lời dummy.
 - `v2`
-  - LangGraph tool-calling co `thread_id` memory.
-  - Retrieval dung retriever tool, chua tach classify / answer / escalate.
+  - Tool-calling graph có `thread_id` memory.
 - `v3`
-  - Graph tach node ro rang: `classify -> retrieve -> answer -> escalate`.
-  - Response schema co `confidence`, `query_type`, `escalate`, `sources`.
-  - Co them endpoint `POST /feedback`.
+  - Tách node `classify -> retrieve -> answer -> escalate`.
+- `v4`
+  - Thêm `driver` / `prospect`
+  - Thêm `rephrase` để xử lý follow-up theo lịch sử
+  - Bổ sung `url` trong `sources`
+  - Điều chỉnh logic `escalate` để an toàn hơn
 
-## 9. Huong nang cap tiep theo
+## 11. Nên đọc file nào đầu tiên
 
-- Sua block `uvicorn.run(...)` trong `backend_ai/app/main_v3.py` de tro dung `app.main_v3:app`.
-- Chuan hoa `.env.example` theo luong `SQLite + FAISS`, bo giam phu thuoc Qdrant neu khong dung.
-- Cap nhat `docs/API_CONTRACT.md` theo schema cua `main_v3.py`.
-- Bo sung test va evaluation cho luong `v3`.
-
-## 10. File can doc dau tien neu tiep tuc nang cap
-
-Neu ban tiep tuc nang cap RAG, nen doc theo thu tu nay:
+Nếu tiếp tục nâng cấp hệ thống, nên đọc theo thứ tự:
 
 1. `backend_ai/app/main_v3.py`
-2. `backend_ai/app/core/agent_graph_v3.py`
-3. `backend_ai/app/prompts/system_prompt_v3.py`
+2. `backend_ai/app/core/agent_graph_v4.py`
+3. `backend_ai/app/prompts/system_prompt_v4.py`
 4. `backend_ai/app/utils/retrieval_advanced.py`
-5. `data_pipeline/db_setup/setup_db.py`
+5. `frontend/web_demo/app.py`
+6. `data_pipeline/db_setup/setup_db.py`
