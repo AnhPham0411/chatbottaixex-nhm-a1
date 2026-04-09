@@ -33,86 +33,83 @@ st.markdown(f"""
         --xanh-primary: {BRAND_COLOR};
         --xanh-secondary: #00B4BF;
         --xanh-accent: #7FFFD4;
-        --xanh-bg: #F8FAFC;
-        --text-dark: #0F172A;
-        --text-muted: #64748B;
-        --glass-bg: rgba(255, 255, 255, 0.7);
-        --glass-border: rgba(255, 255, 255, 0.4);
+        /* Using Streamlit theme variables */
+        --st-bg: var(--background-color);
+        --st-secondary-bg: var(--secondary-background-color);
+        --st-text: var(--text-color);
     }}
 
     * {{
         font-family: 'Plus Jakarta Sans', sans-serif;
     }}
 
-    /* Background Gradient */
+    /* Background Gradient - Subtle in Dark Mode */
     .stApp {{
-        background: radial-gradient(circle at 0% 0%, rgba(0, 204, 187, 0.05) 0%, transparent 50%),
-                    radial-gradient(circle at 100% 100%, rgba(0, 180, 191, 0.05) 0%, transparent 50%),
-                    #FFFFFF;
+        background: radial-gradient(circle at 0% 0%, rgba(0, 204, 187, 0.03) 0%, transparent 50%),
+                    radial-gradient(circle at 100% 100%, rgba(0, 180, 191, 0.03) 0%, transparent 50%),
+                    var(--st-bg);
     }}
 
     /* Glassmorphism Sidebar */
     [data-testid="stSidebar"] {{
-        background: rgba(255, 255, 255, 0.6) !important;
+        background: var(--st-secondary-bg) !important;
         backdrop-filter: blur(20px) !important;
-        border-right: 1px solid var(--glass-border) !important;
+        border-right: 1px solid rgba(128, 128, 128, 0.1) !important;
     }}
 
-    /* Header Styling */
+    /* Header Styling - Adaptive */
     .premium-header {{
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 1.5rem 2rem;
-        background: rgba(255, 255, 255, 0.4);
+        padding: 1rem 1.5rem;
+        background: rgba(128, 128, 128, 0.05);
         backdrop-filter: blur(12px);
-        border-bottom: 1px solid var(--glass-border);
-        border-radius: 0 0 24px 24px;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.1);
+        border-radius: 0 0 20px 20px;
         margin-bottom: 2rem;
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
     }}
 
     .brand-title {{
         font-weight: 800;
-        font-size: 1.5rem;
+        font-size: 1.2rem;
         background: linear-gradient(135deg, var(--xanh-primary), var(--xanh-secondary));
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         letter-spacing: -0.5px;
     }}
 
-    /* Enhanced Chat Bubbles */
+    /* Adaptive Chat Bubbles */
     .chat-bubble {{
-        padding: 1.25rem;
-        border-radius: 20px;
-        margin-bottom: 1rem;
+        padding: 1rem 1.25rem;
+        border-radius: 18px;
+        margin-bottom: 0.75rem;
         max-width: 85%;
-        line-height: 1.6;
+        line-height: 1.5;
         font-size: 0.95rem;
         position: relative;
-        animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        animation: slideUp 0.3s ease-out;
     }}
 
     @keyframes slideUp {{
-        from {{ opacity: 0; transform: translateY(20px); }}
+        from {{ opacity: 0; transform: translateY(10px); }}
         to {{ opacity: 1; transform: translateY(0); }}
     }}
 
     .user-bubble {{
         background: var(--xanh-primary);
-        color: white;
+        color: white !important;
         margin-left: auto;
         border-bottom-right-radius: 4px;
-        box-shadow: 0 10px 15px -3px rgba(0, 204, 187, 0.2);
+        box-shadow: 0 4px 15px rgba(0, 204, 187, 0.15);
     }}
 
     .bot-bubble {{
-        background: white;
-        color: var(--text-dark);
+        background: var(--st-secondary-bg);
+        color: var(--st-text);
         margin-right: auto;
         border-bottom-left-radius: 4px;
-        border: 1px solid rgba(0, 204, 187, 0.1);
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+        border: 1px solid rgba(128, 128, 128, 0.1);
     }}
 
     /* Confidence Badge */
@@ -126,19 +123,10 @@ st.markdown(f"""
         margin-bottom: 8px;
     }}
     
-    .conf-low {{
-        background: #FEF9C3;
-        color: #854D0E;
-        border: 1px solid #FDE047;
-    }}
-    
-    .conf-high {{
-        background: #DCFCE7;
-        color: #166534;
-        border: 1px solid #BBF7D0;
-    }}
+    .conf-low {{ background: rgba(254, 249, 195, 0.2); color: #EAB308; border: 1px solid rgba(234, 179, 8, 0.3); }}
+    .conf-high {{ background: rgba(220, 252, 231, 0.2); color: #22C55E; border: 1px solid rgba(34, 197, 94, 0.3); }}
 
-    /* Hotline Button Style */
+    /* Hotline Button */
     .hotline-btn {{
         display: flex;
         align-items: center;
@@ -146,44 +134,37 @@ st.markdown(f"""
         gap: 8px;
         background: #EF4444;
         color: white !important;
-        padding: 12px 20px;
-        border-radius: 12px;
+        padding: 10px 15px;
+        border-radius: 10px;
         text-decoration: none;
         font-weight: 700;
+        font-size: 0.9rem;
         margin-top: 10px;
-        transition: transform 0.2s;
-    }}
-    
-    .hotline-btn:hover {{
-        transform: scale(1.02);
-        background: #DC2626;
     }}
 
-    /* Micro-buttons for feedback */
+    /* Micro-buttons */
     .stButton > button[kind="secondary"] {{
         padding: 0.2rem 0.5rem !important;
         font-size: 0.8rem !important;
-        min-height: 24px !important;
-        line-height: 1 !important;
         border-radius: 8px !important;
     }}
 
-    /* Source tags */
+    /* Adaptive Source Tags */
     .source-tag {{
         display: inline-block;
         padding: 2px 10px;
         margin: 5px 5px 0 0;
-        background-color: rgba(0, 204, 187, 0.1);
-        border: 1px solid var(--xanh-primary);
-        border-radius: 20px;
-        font-size: 0.8rem;
+        background: rgba(0, 204, 187, 0.05);
+        border: 1px solid rgba(0, 204, 187, 0.2);
+        border-radius: 15px;
+        font-size: 0.75rem;
         color: var(--xanh-primary);
-        font-weight: 500;
     }}
 
-    /* Hide Streamlit components */
+    /* Clean UI */
     #MainMenu {{visibility: hidden;}}
     footer {{visibility: hidden;}}
+    header {{visibility: hidden;}}
     </style>
 """, unsafe_allow_html=True)
 
@@ -201,14 +182,7 @@ with st.sidebar:
     st.markdown("### 🚖 Trợ Lý Đối Tác")
     st.info("Hỗ trợ Đối tác tra cứu quy định, chính sách và hướng dẫn vận hành nhanh chóng.")
     
-    st.markdown("### 💡 Câu hỏi gợi ý")
-    suggestions = ["Quy định về hành lý?", "Chính sách giá cước?", "Làm sao để đăng ký đối tác?", "Quy định về thú cưng?"]
-    for suggestion in suggestions:
-        if st.button(suggestion, use_container_width=True):
-            st.session_state.pending_prompt = suggestion
-
-    st.divider()
-    if st.button("🗑️ Xoa lịch sử chat", use_container_width=True):
+    if st.button("🗑️ Xoá lịch sử chat", use_container_width=True):
         st.session_state.messages = []
         st.session_state.thread_id = str(uuid.uuid4())
         st.rerun()
@@ -217,14 +191,13 @@ with st.sidebar:
         st.error("🆘 Cần hỗ trợ gấp?")
         st.markdown('<a href="tel:19002088" class="hotline-btn">📞 GỌI HOTLINE NGAY</a>', unsafe_allow_html=True)
 
-    st.spacer = st.empty()
+    st.divider()
     st.caption("Phiên bản 4.0 | Xanh SM NHM Team")
 
 # --- MAIN HEADER ---
 st.markdown(f"""
     <div class="premium-header">
         <div class="brand-title">Dịch Vụ Từ Trái Tim ❤️</div>
-        <div style="font-size: 0.8rem; color: var(--text-muted);">Trợ lý ảo chính thức của Xanh SM</div>
     </div>
 """, unsafe_allow_html=True)
 
