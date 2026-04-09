@@ -4,7 +4,10 @@ pydantic
 openai
 langchain
 langchain-community
+langchain-openai
 langgraph
 faiss-cpu
 sentence-transformers
+rank_bm25
 python-dotenv
+numpy
