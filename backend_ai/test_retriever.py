@@ -29,7 +29,7 @@ def run_test():
         print("✅ Khởi tạo Retriever thành công!\n")
         
         # 3. Đặt một câu hỏi thực tế
-        test_query = "Quy định mang thú cưng lên xe Xanh SM như thế nào?"
+        test_query = "Đưa cho tôi điều khoản sử dụng?"
         print(f"❓ Câu hỏi test: '{test_query}'\n")
         
         print("🔍 Đang truy xuất dữ liệu...")
