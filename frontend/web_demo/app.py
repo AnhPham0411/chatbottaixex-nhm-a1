@@ -1,151 +1,198 @@
 import streamlit as st
 import requests
 import time
+import os
+import uuid
+import datetime
+from dotenv import load_dotenv
 
-# --- CONFIGURATION & BRANDING ---
+# Load environment variables if .env exists
+load_dotenv()
+
+# --- CONFIGURATION ---
+BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:8000/chat")
+FEEDBACK_URL = os.getenv("FEEDBACK_URL", "http://localhost:8000/feedback")
+
+# --- BRANDING & ULTRA-PREMIUM CSS ---
 st.set_page_config(
-    page_title="Hỗ Trợ Tài Xế Xanh SM",
-    page_icon="🚖",
+    page_title="Xanh SM Driver Assistant",
+    page_icon="🤖",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Ultra-Premium CSS V2
+# Custom Signature CSS
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
     
     :root {
-        --primary: #008D96;
-        --primary-light: #00B4BF;
-        --secondary: #7FFFD4;
-        --bg-main: #F1F5F9;
-        --glass: rgba(255, 255, 255, 0.7);
-        --text-main: #1E293B;
+        --xanh-primary: #008D96;
+        --xanh-secondary: #00B4BF;
+        --xanh-accent: #7FFFD4;
+        --xanh-bg: #F8FAFC;
+        --text-dark: #0F172A;
+        --text-muted: #64748B;
+        --glass-bg: rgba(255, 255, 255, 0.7);
+        --glass-border: rgba(255, 255, 255, 0.4);
     }
 
-    html, body, [class*="css"] {
-        font-family: 'Inter', sans-serif;
+    * {
+        font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
-    /* Glassmorphism Background */
+    /* Background Gradient */
     .stApp {
-        background-image: radial-gradient(at 0% 0%, hsla(184,100%,95%,1) 0, transparent 50%), 
-                          radial-gradient(at 50% 0%, hsla(184,100%,98%,1) 0, transparent 50%), 
-                          radial-gradient(at 100% 0%, hsla(184,100%,95%,1) 0, transparent 50%);
-        background-attachment: fixed;
+        background: radial-gradient(circle at 0% 0%, rgba(0, 141, 150, 0.05) 0%, transparent 50%),
+                    radial-gradient(circle at 100% 100%, rgba(0, 180, 191, 0.05) 0%, transparent 50%),
+                    #FFFFFF;
     }
 
-    /* Header with Blur */
-    .main-header {
-        position: sticky;
-        top: 0;
-        z-index: 999;
-        background: rgba(255, 255, 255, 0.4);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        padding: 1rem 2rem;
-        border-radius: 0 0 24px 24px;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        margin-bottom: 2rem;
+    /* Glassmorphism Sidebar */
+    [data-testid="stSidebar"] {
+        background: rgba(255, 255, 255, 0.6) !important;
+        backdrop-filter: blur(20px) !important;
+        border-right: 1px solid var(--glass-border) !important;
+    }
+
+    /* Header Styling */
+    .premium-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
-    }
-    
-    .header-title {
-        background: linear-gradient(90deg, #008D96, #00B4BF);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: 800;
-        font-size: 1.5rem;
-        margin: 0;
+        padding: 1.5rem 2rem;
+        background: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--glass-border);
+        border-radius: 0 0 24px 24px;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
     }
 
-    /* Chat Bubbles Upgraded */
-    .stChatMessage {
-        animation: fadeIn 0.5s ease-out;
+    .brand-title {
+        font-weight: 800;
+        font-size: 1.5rem;
+        background: linear-gradient(135deg, var(--xanh-primary), var(--xanh-secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: -0.5px;
     }
-    
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
+
+    /* Enhanced Chat Bubbles */
+    .chat-bubble {
+        padding: 1.25rem;
+        border-radius: 20px;
+        margin-bottom: 1rem;
+        max-width: 85%;
+        line-height: 1.6;
+        font-size: 0.95rem;
+        position: relative;
+        animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
     }
 
     .user-bubble {
-        background-color: var(--primary) !important;
-        color: white !important;
-        border-radius: 20px 20px 4px 20px !important;
-        padding: 1.2rem !important;
+        background: var(--xanh-primary);
+        color: white;
         margin-left: auto;
+        border-bottom-right-radius: 4px;
         box-shadow: 0 10px 15px -3px rgba(0, 141, 150, 0.2);
     }
 
     .bot-bubble {
-        background: white !important;
-        color: var(--text-main) !important;
-        border-radius: 20px 20px 20px 4px !important;
-        padding: 1.2rem !important;
+        background: white;
+        color: var(--text-dark);
         margin-right: auto;
-        border: 1px solid rgba(226, 232, 240, 0.8) !important;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        border-bottom-left-radius: 4px;
+        border: 1px solid rgba(0, 141, 150, 0.1);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
     }
 
-    /* Reasoning/Thinking Section */
-    .thought-process {
-        background-color: #F8FAFC;
-        border-left: 3px solid #CBD5E1;
-        padding: 0.8rem 1.2rem;
-        margin-bottom: 1rem;
-        border-radius: 8px;
-        font-size: 0.85rem;
-        color: #64748B;
-        font-style: italic;
+    /* Confidence Badge */
+    .confidence-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-bottom: 8px;
     }
     
-    .thought-title {
-        font-weight: 700;
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        letter-spacing: 0.05em;
-        margin-bottom: 0.4rem;
+    .conf-low {
+        background: #FEF9C3;
+        color: #854D0E;
+        border: 1px solid #FDE047;
+    }
+    
+    .conf-high {
+        background: #DCFCE7;
+        color: #166534;
+        border: 1px solid #BBF7D0;
+    }
+
+    /* Hotline Button Style */
+    .hotline-btn {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        justify-content: center;
+        gap: 8px;
+        background: #EF4444;
+        color: white !important;
+        padding: 12px 20px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 700;
+        margin-top: 10px;
+        transition: transform 0.2s;
+    }
+    
+    .hotline-btn:hover {
+        transform: scale(1.02);
+        background: #DC2626;
     }
 
-    /* Floating Input Card */
-    .input-container {
-        position: fixed;
-        bottom: 2rem;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 60%;
-        max-width: 800px;
-        background: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(20px);
-        padding: 1rem;
-        border-radius: 40px;
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
+    /* Sources Section */
+    .source-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
     }
 
-    /* Sidebar Glassmorphism */
-    section[data-testid="stSidebar"] {
-        background: rgba(255, 255, 255, 0.5) !important;
-        backdrop-filter: blur(10px);
+    .source-tag {
+        font-size: 0.7rem;
+        background: #F1F5F9;
+        color: #64748B;
+        padding: 4px 8px;
+        border-radius: 6px;
+        border: 1px solid #E2E8F0;
     }
 
-    /* Pulsating Indicator */
-    .status-dot {
-        height: 8px;
+    /* Pulse Status */
+    .status-indicator {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        background: white;
+        padding: 6px 12px;
+        border-radius: 20px;
+        border: 1px solid var(--glass-border);
+    }
+
+    .pulse-dot {
         width: 8px;
-        background-color: #22C55E;
+        height: 8px;
+        background: #22C55E;
         border-radius: 50%;
-        display: inline-block;
-        margin-right: 5px;
         box-shadow: 0 0 0 rgba(34, 197, 94, 0.4);
         animation: pulse 2s infinite;
     }
@@ -156,153 +203,158 @@ st.markdown("""
         100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
     }
 
+    /* Hide Streamlit components for premium feel */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    
     </style>
 """, unsafe_allow_html=True)
 
+# --- SESSION STATE INITIALIZATION ---
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+if "failure_count" not in st.session_state:
+    st.session_state.failure_count = 0
+if "search_only" not in st.session_state:
+    st.session_state.search_only = False
+
 # --- SIDEBAR ---
 with st.sidebar:
-    st.markdown('<h2 style="color: #008D96;">🚖 Driver Assistant</h2>', unsafe_allow_html=True)
-    st.markdown("""
-        <div style="background: rgba(0, 141, 150, 0.05); padding: 1rem; border-radius: 12px; border: 1px solid rgba(0, 141, 150, 0.1);">
-            <p style="font-size: 0.9rem; margin: 0;">Chào tài xế! Hệ thống đang ở trạng thái <b>Sẵn sàng</b>.</p>
-        </div>
-    """, unsafe_allow_html=True)
+    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Xanh_SM_logo.svg/2560px-Xanh_SM_logo.svg.png", width=150)
+    st.markdown("### 🚖 Trợ Lý Tài Xế")
+    
+    # Path 4: Recovery (Proactive Hotline in Sidebar too)
+    if st.session_state.failure_count >= 2:
+        st.error("🆘 Bạn cần hỗ trợ gấp?")
+        st.markdown('<a href="tel:19002088" class="hotline-btn">📞 GỌI HOTLINE NGAY</a>', unsafe_allow_html=True)
+    else:
+        st.markdown('<a href="tel:19002088" class="hotline-btn" style="background: var(--xanh-primary);">📞 Hotline: 1900 2088</a>', unsafe_allow_html=True)
+
+    st.divider()
+    
+    # Information Hub
+    st.subheader("📚 Thông tin hữu ích")
+    with st.expander("Quy định & Chính sách", expanded=False):
+        st.button("📜 Bộ quy tắc ứng xử", use_container_width=True)
+        st.button("💵 Phí & Chiết khấu", use_container_width=True)
+        st.button("🔋 Quy định sạc xe", use_container_width=True)
     
     st.divider()
-    st.subheader("📚 Thư viện chính sách")
-    st.button("📜 Bộ quy tắc ứng xử", use_container_width=True)
-    st.button("💵 Cơ cấu phí & chiết khấu", use_container_width=True)
-    st.button("🗺️ Bản đồ khu vực hoạt động", use_container_width=True)
+    
+    # Settings (Path 3 Toggle)
+    st.session_state.search_only = st.toggle("🔍 Chế độ chỉ tra cứu", value=st.session_state.search_only, 
+                                            help="Tắt tóm tắt AI, chỉ hiển thị tài liệu gốc.")
     
     st.spacer = st.empty()
-    st.divider()
-    st.caption("NHM Team © 2026 | Phiên bản 2.0 (Premium)")
+    st.caption("Phiên bản 3.0 Enterprise | NHM Team")
 
-# --- HEADER ---
-st.markdown("""
-    <div class="main-header">
-        <p class="header-title">Chatbot Tài Xế Xanh SM</p>
-        <div style="display: flex; align-items: center; background: white; padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.8rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-            <span class="status-dot"></span> Online - Qdrant Vector DB
+# --- MAIN HEADER ---
+st.markdown(f"""
+    <div class="premium-header">
+        <div class="brand-title">Xanh SM Assistant</div>
+        <div class="status-indicator">
+            <span class="pulse-dot"></span>
+            <span>Hệ thống trực tuyến</span>
         </div>
     </div>
 """, unsafe_allow_html=True)
 
-# Session state
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-
-# Welcome Screen (Upgraded)
-if not st.session_state.messages:
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        st.markdown("""
-            <div style="text-align: center; padding: 3rem 0;">
-                <h1 style="font-size: 3rem;">👋</h1>
-                <h2 style="font-weight: 800; color: #1E293B;">Làm thế nào tôi có thể giúp bạn?</h2>
-                <p style="color: #64748B; font-size: 1.1rem;">Tôi là trợ lý AI chuyên biệt cho cộng đồng tài xế Xanh SM.</p>
-            </div>
-        """, unsafe_allow_html=True)
-        
-        suggestions = [
-            "Quy định về việc sạc xe điện?",
-            "Làm sao để khiếu nại cuốc xe?",
-            "Chương trình Xanh SM Reward là gì?",
-            "Thủ tục đăng ký cho người mới?"
-        ]
-        
-        cols = st.columns(2)
-        for i, s in enumerate(suggestions):
-            if cols[i % 2].button(s, key=f"s_{i}", use_container_width=True):
-                st.session_state.messages.append({"role": "user", "content": s})
-                st.rerun()
-
-# Display logic
-for msg in st.session_state.messages:
+# --- INTERACTION PATHS DISPLAY ---
+for idx, msg in enumerate(st.session_state.messages):
     role = msg["role"]
     content = msg["content"]
     thought = msg.get("thought", "")
     sources = msg.get("sources", [])
+    confidence = msg.get("confidence", 1.0)
+    timestamp = msg.get("timestamp", datetime.datetime.now().strftime("%H:%M %d/%m/%Y"))
     
     if role == "user":
-        with st.chat_message("user", avatar="👤"):
-            st.markdown(f'<div class="user-bubble">{content}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="chat-bubble user-bubble">{content}</div>', unsafe_allow_html=True)
     else:
-        with st.chat_message("assistant", avatar="🤖"):
-            # Reasoning section
+        # BOT MESSAGE CONTAINER
+        with st.container():
+            # Path 2: Low Confidence Badge
+            if confidence < 0.7:
+                st.markdown('<div class="confidence-badge conf-low">⚠️ Cần xác nhận từ CSKH</div>', unsafe_allow_html=True)
+            elif confidence > 0.9:
+                st.markdown('<div class="confidence-badge conf-high">✅ Đã kiểm chứng</div>', unsafe_allow_html=True)
+
+            # Thought Process (Expandable)
             if thought:
-                with st.expander("💭 Xem luồng suy luận của AI", expanded=False):
-                    st.markdown(f'<div class="thought-process"><p class="thought-title">🔍 PHÂN TÍCH</p>{thought}</div>', unsafe_allow_html=True)
-            
-            st.markdown(f'<div class="bot-bubble">{content}</div>', unsafe_allow_html=True)
-            
-            if sources:
-                source_html = " ".join([f'<span style="display: inline-block; background: #F1F5F9; color: #64748B; padding: 2px 8px; border-radius: 8px; font-size: 0.7rem; margin-top: 8px; border: 1px solid #E2E8F0; margin-right: 5px;">📄 {src}</span>' for src in sources])
-                st.markdown(source_html, unsafe_allow_html=True)
+                with st.expander("🔍 Luồng suy nghĩ của AI", expanded=False):
+                    st.info(thought)
 
-# Chat Input (The input uses the standard st.chat_input which stays bottom)
-if prompt := st.chat_input("Hỏi tôi bất cứ điều gì về Xanh SM..."):
+            # Main Content
+            st.markdown(f'<div class="chat-bubble bot-bubble">{content}</div>', unsafe_allow_html=True)
+            
+            # Path 1: Sources & Path 2: Hotline in bubble
+            col1, col2 = st.columns([3, 1])
+            with col1:
+                if sources:
+                    html_sources = "".join([f'<span class="source-tag">📄 {s}</span>' for s in sources])
+                    st.markdown(f'<div class="source-container">{html_sources}</div>', unsafe_allow_html=True)
+                    st.caption(f"Cập nhật lúc: {timestamp}")
+            
+            with col2:
+                if confidence < 0.7:
+                     st.markdown('<a href="tel:19002088" style="font-size: 0.7rem; color: #EF4444; font-weight: 700;">📞 Gọi Hotline</a>', unsafe_allow_html=True)
+
+            # Path 3: Feedback Rating
+            if idx == len(st.session_state.messages) - 1:
+                fcol1, fcol2, fcol3 = st.columns([1,1,4])
+                if fcol1.button("👍", key=f"up_{idx}"):
+                    st.toast("Cảm ơn bạn đã phản hồi!")
+                if fcol2.button("👎", key=f"down_{idx}"):
+                    st.session_state.failure_count += 1
+                    with st.popover("❌ Báo lỗi nội dung"):
+                        reason = st.radio("Lý do sai:", ["Thông tin cũ", "Không liên quan", "Sai số tiền", "Khác"])
+                        if st.button("Gửi báo cáo", key=f"send_{idx}"):
+                            st.success("Đã ghi nhận! Chúng tôi sẽ kiểm tra lại.")
+                            # Trigger Path 4 check
+                            if st.session_state.failure_count >= 2:
+                                st.rerun()
+
+# --- CHAT INPUT ---
+if prompt := st.chat_input("Hỏi về quy định, chính sách, hoặc hỗ trợ..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
-    st.rerun()
-
-# Processing logic (when the last message is from user)
-if st.session_state.messages and st.session_state.messages[-1]["role"] == "user":
-    user_query = st.session_state.messages[-1]["content"]
     
-    with st.chat_message("assistant", avatar="🤖"):
-        # Initial status
-        status_placeholder = st.empty()
-        status_placeholder.markdown("🔍 *Đang truy vấn kiến thức Xanh SM...*")
-        
+    # Process Response
+    with st.spinner("Đang truy xuất dữ liệu..."):
         try:
-            # Simulate a real API call delay
-            time.sleep(1)
+            # Simulate real backend behavior
+            payload = {
+                "message": prompt,
+                "driver_id": "DRV_123456",
+                "search_only": st.session_state.search_only
+            }
             
-            # Call Backend (Placeholder URL)
-            response = requests.post(
-                "http://localhost:8000/chat",
-                json={"message": user_query},
-                timeout=20
-            )
+            response = requests.post(BACKEND_URL, json=payload, timeout=15)
             
             if response.status_code == 200:
                 data = response.json()
-                reply = data["reply"]
-                sources = data.get("sources", [])
+                # Mock missing fields for demo if not present
+                reply = data.get("reply", "Xin lỗi, tôi gặp trục trặc khi xử lý câu trả lời.")
+                thought = data.get("thought", "Hệ thống đang phân tích dựa trên Vector DB...")
+                sources = data.get("sources", ["Sổ tay tài xế 2024"])
+                confidence = data.get("confidence", 0.95) # Default high
                 
-                # Mock a "thought" process for demo purposes 
-                # In a real RAG app, this would come from the backend's internal logs
-                thought_process = f"1. Nhận truy vấn: '{user_query}'\n2. Tìm kiếm Vector DB (Qdrant) cho các từ khóa cốt lõi.\n3. Tìm thấy 3 đoạn văn bản liên quan trong sổ tay tài xế.\n4. Đang tổng hợp câu trả lời ngắn gọn và chính xác nhất..."
+                # Logic to trigger Path 2 for specific demo keywords if needed
+                if "tiền" in prompt.lower() or "phạt" in prompt.lower():
+                    confidence = 0.65 # Mock low confidence for sensitive topics
                 
-                # Update UI
-                status_placeholder.empty()
-                
-                with st.expander("💭 Xem luồng suy luận của AI", expanded=True):
-                     st.markdown(f'<div class="thought-process"><p class="thought-title">🔍 PHÂN TÍCH</p>{thought_process}</div>', unsafe_allow_html=True)
-                
-                # Streaming effect
-                message_placeholder = st.empty()
-                full_response = ""
-                for chunk in reply.split():
-                    full_response += chunk + " "
-                    time.sleep(0.04)
-                    message_placeholder.markdown(f'<div class="bot-bubble">{full_response}▌</div>', unsafe_allow_html=True)
-                
-                message_placeholder.markdown(f'<div class="bot-bubble">{reply}</div>', unsafe_allow_html=True)
-                
-                if sources:
-                    source_html = " ".join([f'<span style="display: inline-block; background: #F1F5F9; color: #64748B; padding: 2px 8px; border-radius: 8px; font-size: 0.7rem; margin-top: 8px; border: 1px solid #E2E8F0; margin-right: 5px;">📄 {src}</span>' for src in sources])
-                    st.markdown(source_html, unsafe_allow_html=True)
-                
-                # Save to history
                 st.session_state.messages.append({
-                    "role": "assistant", 
-                    "content": reply, 
-                    "thought": thought_process,
-                    "sources": sources
+                    "role": "assistant",
+                    "content": reply,
+                    "thought": thought,
+                    "sources": sources,
+                    "confidence": confidence,
+                    "timestamp": datetime.datetime.now().strftime("%H:%M %d/%m/%Y")
                 })
             else:
-                status_placeholder.markdown("❌ Lỗi kỹ thuật hệ thống. Đang kết nối lại...")
-                
+                st.error("Backend không phản hồi. Đang sử dụng chế độ dự phòng.")
+                st.session_state.failure_count += 1
         except Exception as e:
-            status_placeholder.markdown(f"⚠️ Không thể kết nối Backend. Error: {str(e)}")
+            st.error(f"Lỗi kết nối: {str(e)}")
+            st.session_state.failure_count += 1
+    
+    st.rerun()
