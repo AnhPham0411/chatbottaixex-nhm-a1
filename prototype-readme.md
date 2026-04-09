@@ -181,9 +181,7 @@ Phụ trách toàn bộ phần trải nghiệm người dùng.
 ## 4. Vũ Hồng Quang – Kỹ sư Kiểm thử 
 Phụ trách QA và điều phối:
 
-### Spec & Workflow
-- Viết Mini AI Spec
-- Mô tả logic workflow hệ thống
+
 
 ### Golden Dataset
 - Xây dựng bộ test cases mẫu
@@ -196,13 +194,10 @@ Phụ trách QA và điều phối:
   - tài xế
 - Kiểm tra độ chính xác câu trả lời
 
-### Project Coordination
-- Theo dõi tiến độ team
-- Điều phối tích hợp các module
-
 ### Demo Support
 - Hỗ trợ chuẩn bị slide và demo pitching
 
+### Hỗ trợ thiết kế eval metric
 ---
 
 ## 5. Nguyễn Quang Trường – Kỹ sư Kiểm thử & Đánh giá (QA / Evaluation Engineer)
@@ -224,7 +219,7 @@ Phụ trách đo lường chất lượng hệ thống:
 - `qa_eval/`
 
 ---
-### 6. Vu Le Hoang — AI Prototype Developer (Version 1 Builder)
+### 6. Vũ Lê Hoàng — AI Prototype Developer (Version 1 Builder)
 
 #### Vai trò:
 Người phụ trách xây dựng phiên bản đầu tiên (V1) của hệ thống để tạo nền thử nghiệm ban đầu cho toàn team.
@@ -265,7 +260,7 @@ Hoàng và Hoàng Tuấn Anh → xây retrieval + agent + backend
 Phạm Tuấn Anh → frontend demo + canvas flow
 
 ### Giai đoạn 4: QA & Evaluation
-Trường + Quang + Vu Le Hoang → test, metrics, golden dataset
+Trường + Quang + Vũ Lê Hoàng → test, metrics, golden dataset
 
 ### Giai đoạn 5: Final Integration
 Cả team ráp hệ thống + chạy demo end-to-end
