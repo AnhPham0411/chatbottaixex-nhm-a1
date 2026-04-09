@@ -32,3 +32,7 @@ Dự án được chia thành 4 phần chính tương ứng với 4 vai trò tro
 
 ## Tài liệu
 Xem chi tiết tại thư mục `docs/`.
+
+
+streamlit run web_demo/app.py
+python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
