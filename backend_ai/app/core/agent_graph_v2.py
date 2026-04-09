@@ -1,6 +1,6 @@
 """
-agent_graph.py
-Đặt tại: backend_ai/app/core/agent_graph.py
+agent_graph_v2.py
+
 
 Thay đổi so với phiên bản cũ:
 - list_of_tools lấy từ retrieval_advanced (Hybrid + Reranker) thay vì vector_tools
