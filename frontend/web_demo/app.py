@@ -142,11 +142,34 @@ st.markdown(f"""
         margin-top: 10px;
     }}
 
-    /* Micro-buttons */
+    /* Mini-feedback buttons */
     .stButton > button[kind="secondary"] {{
-        padding: 0.2rem 0.5rem !important;
+        padding: 0.2rem 0.4rem !important;
         font-size: 0.8rem !important;
-        border-radius: 8px !important;
+        border-radius: 20px !important;
+        background: transparent !important;
+        border: 1px solid rgba(128, 128, 128, 0.2) !important;
+        transition: all 0.2s ease !important;
+        min-width: 35px !important;
+        height: 35px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }}
+
+    .stButton > button[kind="secondary"]:hover {{
+        border-color: var(--xanh-primary) !important;
+        background: rgba(0, 204, 187, 0.05) !important;
+        transform: scale(1.1);
+    }}
+
+    /* Container to push buttons to the right */
+    .feedback-container {{
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+        margin-top: -35px;
+        padding-right: 10px;
     }}
 
     /* Adaptive Source Tags */
@@ -175,6 +198,24 @@ if "failure_count" not in st.session_state:
     st.session_state.failure_count = 0
 if "thread_id" not in st.session_state:
     st.session_state.thread_id = str(uuid.uuid4())
+if "use_ai" not in st.session_state:
+    st.session_state.use_ai = True
+
+# --- FEEDBACK FUNCTION ---
+def send_feedback(msg_idx, reason):
+    try:
+        requests.post(
+            f"{BACKEND_URL.replace('/chat', '/feedback')}",
+            json={
+                "thread_id": st.session_state.thread_id,
+                "message_index": msg_idx,
+                "reason": reason
+            },
+            timeout=5
+        )
+        st.toast("Cảm ơn phản hồi của bạn! ❤️")
+    except:
+        st.toast("⚠️ Gửi phản hồi thất bại.")
 
 # --- SIDEBAR ---
 with st.sidebar:
@@ -182,9 +223,13 @@ with st.sidebar:
     st.markdown("### 🚖 Trợ Lý Đối Tác")
     st.info("Hỗ trợ Đối tác tra cứu quy định, chính sách và hướng dẫn vận hành nhanh chóng.")
     
+    # Opt-out Setting (Path 4)
+    st.session_state.use_ai = st.toggle("🤖 Sử dụng Trợ lý AI", value=True, help="Tắt để chỉ tìm kiếm tài liệu gốc")
+
     if st.button("🗑️ Xoá lịch sử chat", use_container_width=True):
         st.session_state.messages = []
         st.session_state.thread_id = str(uuid.uuid4())
+        st.session_state.failure_count = 0
         st.rerun()
 
     if st.session_state.failure_count >= 2:
@@ -192,7 +237,7 @@ with st.sidebar:
         st.markdown('<a href="tel:19002088" class="hotline-btn">📞 GỌI HOTLINE NGAY</a>', unsafe_allow_html=True)
 
     st.divider()
-    st.caption("Phiên bản 4.0 | Xanh SM NHM Team")
+    st.caption("Phiên bản 5.0 | Xanh SM NHM Team")
 
 # --- MAIN HEADER ---
 st.markdown(f"""
@@ -206,27 +251,43 @@ for idx, msg in enumerate(st.session_state.messages):
     role = msg["role"]
     content = msg["content"]
     sources = msg.get("sources", [])
+    confidence = msg.get("confidence", "high")
+    escalate = msg.get("escalate", False)
     
     if role == "user":
         st.markdown(f'<div class="chat-bubble user-bubble">{content}</div>', unsafe_allow_html=True)
     else:
         with st.chat_message("assistant"):
+            # Path 2: Confidence Badge
+            if confidence == "low":
+                st.markdown('<div class="confidence-badge conf-low">⚠️ Cần xác nhận</div>', unsafe_allow_html=True)
+            
             st.markdown(content)
+            
+            # Path 4: Escalation Hotline inside message
+            if escalate:
+                st.warning("Thông tin này có thể chưa đầy đủ cho trường hợp của bạn.")
+                st.markdown('<a href="tel:19002088" class="hotline-btn">📞 GỌI HOTLINE KIỂM TRA NGAY</a>', unsafe_allow_html=True)
+
             if sources:
                 st.markdown('<div style="margin-top: 10px; font-weight: 600; font-size: 0.85rem;">📚 Nguồn tham khảo:</div>', unsafe_allow_html=True)
                 for source in sources:
                     title = source.get("title", "") if isinstance(source, dict) else source
                     st.markdown(f'<span class="source-tag">{title}</span>', unsafe_allow_html=True)
+            
+            # Path 3: Feedback Buttons (Right Aligned)
+            st.markdown('<div class="feedback-container">', unsafe_allow_html=True)
+            col_space, col1, col2 = st.columns([0.85, 0.07, 0.08])
+            with col1:
+                if st.button("👍", key=f"up_{idx}", help="Hữu ích"):
+                    st.toast("Cảm ơn bạn! ❤️")
+            with col2:
+                if st.button("👎", key=f"down_{idx}", help="Thông tin chưa đúng"):
+                    send_feedback(idx, "wrong_info")
+            st.markdown('</div>', unsafe_allow_html=True)
 
 # --- CHAT INPUT ---
 if prompt := st.chat_input("Hỏi về quy định, chính sách..."):
-    pass # logic below handles both input methods
-
-if hasattr(st.session_state, "pending_prompt"):
-    prompt = st.session_state.pending_prompt
-    del st.session_state.pending_prompt
-
-if prompt:
     st.session_state.messages.append({"role": "user", "content": prompt})
     st.rerun()
 
@@ -237,35 +298,48 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] == "user"
     with st.chat_message("assistant"):
         with st.spinner("Xanh SM đang tra cứu..."):
             try:
-                response = requests.post(
-                    BACKEND_URL,
-                    json={
-                        "message": last_prompt,
-                        "thread_id": st.session_state.thread_id
-                    },
-                    timeout=30
-                )
+                # Prepare payload
+                payload = {
+                    "message": last_prompt,
+                    "thread_id": st.session_state.thread_id
+                }
+                
+                response = requests.post(BACKEND_URL, json=payload, timeout=30)
                 
                 if response.status_code == 200:
                     data = response.json()
                     answer = data.get("reply", "Dạ, tôi chưa có thông tin cụ thể về vấn đề này.")
                     sources = data.get("sources", [])
+                    confidence = data.get("confidence", "high")
+                    escalate = data.get("escalate", False)
                     
-                    st.markdown(answer)
-                    if sources:
-                        st.markdown('<div style="margin-top: 10px; font-weight: 600; font-size: 0.85rem;">📚 Nguồn tham khảo:</div>', unsafe_allow_html=True)
-                        for source in sources:
-                            st.markdown(f'<span class="source-tag">{source}</span>', unsafe_allow_html=True)
-                    
+                    # Update session state
                     st.session_state.messages.append({
                         "role": "assistant",
                         "content": answer,
-                        "sources": sources
+                        "sources": sources,
+                        "confidence": confidence,
+                        "escalate": escalate
                     })
+                    st.session_state.failure_count = 0 # reset on success
+                    st.rerun()
                 else:
                     st.error(f"❌ Lỗi kết nối Backend ({response.status_code})")
+                    # Append a system message to stop the loop
+                    st.session_state.messages.append({
+                        "role": "assistant", 
+                        "content": "⚠️ Đã có lỗi xảy ra khi kết nối tới hệ thống. Bạn vui lòng thử lại sau hoặc gọi Hotline.",
+                        "confidence": "low"
+                    })
                     st.session_state.failure_count += 1
+                    st.rerun()
             except Exception as e:
                 st.error(f"❌ Lỗi: {str(e)}")
+                st.session_state.messages.append({
+                    "role": "assistant",
+                    "content": f"⚠️ Lỗi: {str(e)}",
+                    "confidence": "low"
+                })
                 st.session_state.failure_count += 1
-    st.rerun()
+                st.rerun()
+

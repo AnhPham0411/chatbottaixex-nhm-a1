@@ -103,30 +103,36 @@ async def chat(query: ChatQuery):
         )
         reply = last_ai.content if last_ai else "Đã xảy ra lỗi, vui lòng thử lại."
 
-        # Lấy các field từ state
-        confidence  = result.get("confidence", "low")
-        query_type  = result.get("query_type", "general")
-        escalate    = result.get("escalate", False)
-        raw_sources = result.get("sources", [])
+        # Lấy các field từ state với fallback an toàn
+        confidence  = result.get("confidence") or "low"
+        query_type  = result.get("query_type") or "general"
+        escalate    = bool(result.get("escalate", False))
+        raw_sources = result.get("sources") or []
+
+        # Log state để debug (Path 3 & 4)
+        logger.info(f"Final State: confidence={confidence}, type={query_type}, escalate={escalate}, sources={len(raw_sources)}")
 
         # Khi cần clarification: confidence=high, escalate=False nhưng reply là câu hỏi
         if result.get("needs_clarification"):
             confidence = "high"
             escalate   = False
 
-        sources = [
-            SourceItem(
-                title=s.get("title", ""),
-                chunk_id=s.get("chunk_id", -1),
-                rerank_score=s.get("rerank_score", 0.0),
-            )
-            for s in raw_sources
-        ]
+        # Chuyển đổi sources sang SourceItem model
+        sources = []
+        for s in raw_sources:
+            if isinstance(s, dict):
+                sources.append(SourceItem(
+                    title=str(s.get("title", "Tài liệu Xanh SM")),
+                    chunk_id=int(s.get("chunk_id", -1)),
+                    rerank_score=float(s.get("rerank_score", 0.0))
+                ))
+            elif isinstance(s, str):
+                sources.append(SourceItem(title=s))
 
         return ChatResponse(
             reply=reply,
-            confidence=confidence,
-            query_type=query_type,
+            confidence=str(confidence),
+            query_type=str(query_type),
             escalate=escalate,
             sources=sources,
             thread_id=thread_id,
@@ -134,7 +140,7 @@ async def chat(query: ChatQuery):
 
     except Exception as e:
         logger.error("Agent error: %s", e, exc_info=True)
-        raise HTTPException(status_code=500, detail="Lỗi xử lý câu hỏi.")
+        raise HTTPException(status_code=500, detail=f"Lỗi xử lý câu hỏi: {str(e)}")
 
 
 @app.post("/feedback")
